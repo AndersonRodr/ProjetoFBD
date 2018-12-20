@@ -19,5 +19,22 @@
 *.tar.gz
 *.rar
 
+out
+.classpath
+.project
+.settings
+.metadata
+*.log
+*.zip
+*.class
+*.swp
+target
+classes
+build
+bin
+classes
+*~
+
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
