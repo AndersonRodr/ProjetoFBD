@@ -28,7 +28,4 @@ public class PessoaJuridica {
     public void setInscEstadual(String inscEstadual) {
         this.inscEstadual = inscEstadual;
     }
-    
-    
-    
 }

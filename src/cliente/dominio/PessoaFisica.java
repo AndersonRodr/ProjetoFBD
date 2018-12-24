@@ -10,7 +10,7 @@ import java.util.Date;
 public class PessoaFisica {
     private int idCliente;
     private String sexo;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String cpf;
 
     public String getSexo() {
@@ -21,11 +21,11 @@ public class PessoaFisica {
         this.sexo = sexo;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

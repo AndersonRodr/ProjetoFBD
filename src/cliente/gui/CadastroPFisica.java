@@ -6,9 +6,13 @@
 package cliente.gui;
 
 import cliente.dominio.Cliente;
+import cliente.dominio.PessoaFisica;
 import javax.swing.JOptionPane;
-import cliente.service.CPF;
+import cliente.service.ServicoClienteCPF;
 import cliente.service.Servico;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +20,7 @@ import cliente.service.Servico;
  */
 public class CadastroPFisica extends javax.swing.JFrame {
     private Servico service = new Servico();
+    private String sexo;
     
     
     public CadastroPFisica() {
@@ -36,8 +41,6 @@ public class CadastroPFisica extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         enderecoCadPFisica = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        senhaCadPFisica = new javax.swing.JPasswordField();
         btnCadPFisica = new javax.swing.JButton();
         nascCadPFisica = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -54,8 +57,6 @@ public class CadastroPFisica extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 
-        jLabel8.setIcon(new javax.swing.ImageIcon("C:\\Users\\Anderson\\Desktop\\cadPFisica.png")); // NOI18N
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -70,7 +71,7 @@ public class CadastroPFisica extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(jLabel8)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(370, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -82,8 +83,6 @@ public class CadastroPFisica extends javax.swing.JFrame {
                 enderecoCadPFisicaActionPerformed(evt);
             }
         });
-
-        jLabel7.setText("Senha:");
 
         btnCadPFisica.setBackground(new java.awt.Color(153, 153, 255));
         btnCadPFisica.setText("CADASTRAR");
@@ -163,8 +162,7 @@ public class CadastroPFisica extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel3)
                             .addComponent(jLabel1)
-                            .addComponent(nomeCadPFisica)
-                            .addComponent(nascCadPFisica)
+                            .addComponent(nascCadPFisica, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
@@ -177,10 +175,9 @@ public class CadastroPFisica extends javax.swing.JFrame {
                                         .addComponent(checkPFisicaF))
                                     .addComponent(jLabel4)))
                             .addComponent(enderecoCadPFisica)
-                            .addComponent(jLabel7)
-                            .addComponent(senhaCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(nomeCadPFisica)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
+                        .addGap(76, 76, 76)
                         .addComponent(btnCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -189,7 +186,7 @@ public class CadastroPFisica extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(4, 4, 4)
                 .addComponent(nomeCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,13 +207,9 @@ public class CadastroPFisica extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(enderecoCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(senhaCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
+                .addGap(27, 27, 27)
+                .addComponent(btnCadPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,8 +223,8 @@ public class CadastroPFisica extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -259,30 +252,40 @@ public class CadastroPFisica extends javax.swing.JFrame {
     }//GEN-LAST:event_nomeCadPFisicaMouseClicked
 
     private void btnCadPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadPFisicaActionPerformed
-        if(validaCampos()){
-
-            
+        if(validarCampos()){            
             Cliente cliente = new Cliente();
             cliente.setNome(nomeCadPFisica.getText());
             cliente.setEndereco(enderecoCadPFisica.getText());
-            if (service.buscarCPF(cpfCadPFisica.getText())){
+            
+            PessoaFisica pessoa = new PessoaFisica();
+            pessoa.setSexo(sexo);
+            pessoa.setDataNascimento(formatarData(nascCadPFisica.getText()));
+            String cpf = cpfCadPFisica.getText();
+            cpf = cpf.replace(".", "");
+            cpf = cpf.replace("-", "");
+            pessoa.setCpf(cpf);
+            if (service.buscarCPF(cpf)){
                 JOptionPane.showMessageDialog(null, "CPF já cadastrado");
             }
             else{
-                if (service.cadCliente(cliente)){
-                    limparCampos();
-                    JOptionPane.showMessageDialog(null, "Cliente Cadastrado!");
-                }
-                else{
-                    JOptionPane.showMessageDialog(null, "Erro ao realizar cadastro.");
+                try {
+                    if (service.cadClientePFisica(cliente, pessoa)){
+                        limparCampos();
+                        JOptionPane.showMessageDialog(null, "Cliente Cadastrado!");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Erro ao realizar cadastro.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro inesperado" + ex);
                 }
             }
         }
     }//GEN-LAST:event_btnCadPFisicaActionPerformed
 
-    private boolean validaCampos(){
+    private boolean validarCampos(){
         String strCpf = cpfCadPFisica.getText();
-        CPF cpf = new CPF(strCpf, true);
+        ServicoClienteCPF cpf = new ServicoClienteCPF(strCpf, true);
         
         if (service.isEmpty(String.valueOf(nomeCadPFisica.getText()))){
             JOptionPane.showMessageDialog(null, "Nome inválido");
@@ -308,11 +311,13 @@ public class CadastroPFisica extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Endereço inválido");
             return false;
         }
-        else if(service.isEmpty(String.valueOf(senhaCadPFisica.getText()))){
-            JOptionPane.showMessageDialog(null, "Senha inválida");
-            return false;
-        }
         else{
+            if (checkPFisicaM.isSelected()){
+                sexo = "M";
+            }
+            else if (checkPFisicaF.isSelected()){
+                sexo = "F";
+            }
             return true;
         }
     }
@@ -324,13 +329,24 @@ public class CadastroPFisica extends javax.swing.JFrame {
         checkPFisicaF.disable();
         nascCadPFisica.setText("  /  /    ");
         enderecoCadPFisica.setText("");
-        senhaCadPFisica.setText("");
     }
     
     private void cpfCadPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfCadPFisicaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cpfCadPFisicaActionPerformed
 
+    
+    private String formatarData(String nasc){
+        String ano = nasc.substring(6, 10);
+
+        String dia = nasc.substring(0, 2);
+
+        String mes = nasc.substring(3, 5);
+
+        return ano+"-"+mes+"-"+dia;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -378,12 +394,10 @@ public class CadastroPFisica extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JFormattedTextField nascCadPFisica;
     private javax.swing.JTextField nomeCadPFisica;
-    private javax.swing.JPasswordField senhaCadPFisica;
     // End of variables declaration//GEN-END:variables
 }

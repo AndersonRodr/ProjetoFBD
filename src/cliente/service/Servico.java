@@ -2,6 +2,9 @@ package cliente.service;
 
 import cliente.dao.ClientePessoaDAO;
 import cliente.dominio.Cliente;
+import cliente.dominio.PessoaFisica;
+import cliente.dominio.PessoaJuridica;
+import java.sql.SQLException;
 import java.util.Calendar;
 
 public class Servico {
@@ -46,9 +49,41 @@ public class Servico {
         }
     }
     
-    public boolean cadCliente(Cliente cliente){
+    public boolean cadClientePFisica(Cliente cliente, PessoaFisica pessoa) throws SQLException{
         boolean cadastroSucesso = dao.inserirCliente(cliente);
         if (cadastroSucesso){
+            if (inserirPFisica(pessoa));{
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public boolean cadClientePJuridica(Cliente cliente, PessoaJuridica pessoa) throws SQLException{
+        boolean cadastroSucesso = dao.inserirCliente(cliente);
+        if (cadastroSucesso){
+            if (inserirPJuridica(pessoa));{
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+    }      
+    
+    public boolean buscarCPF(String cpf){
+        if (dao.verificarCpfBD(cpf)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean buscarCNPJ(String cnpj){
+        if (dao.verificarCnpjBD(cnpj)){
             return true;
         }
         else{
@@ -56,14 +91,15 @@ public class Servico {
         }
     }
     
-    public boolean buscarCPF(String cpf){
-        cpf = cpf.replace(".","");
-        cpf = cpf.replace("-","");
-        if (dao.verificarCpfBD(cpf)){
-            return true;
-        }
-        else{
-            return false;
-        }
+    public boolean inserirPFisica(PessoaFisica pessoa) throws SQLException{
+        int idCliente = dao.buscarIdCliente();
+        dao.inserirPFisica(idCliente, pessoa);
+        return true;
+    }
+    
+    public boolean inserirPJuridica(PessoaJuridica pessoa) throws SQLException{
+        int idCliente = dao.buscarIdCliente();
+        dao.inserirPJuridica(idCliente, pessoa);
+        return true;
     }
 }

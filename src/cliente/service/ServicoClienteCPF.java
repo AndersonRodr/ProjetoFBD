@@ -1,18 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package cliente.service;
 
-/**
- *
- * @author Anderson
- */
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
-public class CPF {
+public class ServicoClienteCPF {
     private String cpf;
     private static final String formato = "###.###.###-##";
     
-    public CPF(String c, boolean m) {
-        this.cpf = this.Format(c,false);
+    public ServicoClienteCPF(String c, boolean m) {
+        this.cpf = this.format(c,false);
     }
     
     
@@ -72,10 +74,10 @@ public class CPF {
     }
 
     public String getCPF(boolean Mascara) {
-        return Format(this.cpf,Mascara);
+        return format(this.cpf,Mascara);
     }
 
-    private String Format(String C, boolean Mascara){
+    private String format(String C, boolean Mascara){
         if(Mascara){
             return(C.substring(0, 3) + "." + C.substring(3, 6) + "." +
             C.substring(6, 9) + "-" + C.substring(9, 11));
