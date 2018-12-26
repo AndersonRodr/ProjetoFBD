@@ -13,29 +13,16 @@ import javax.swing.text.MaskFormatter;
  *
  * @author Anderson
  */
-public class Cliente extends javax.swing.JFrame {
-    private boolean frameCadPFisicaOpen = false;
+public class ClienteJF extends javax.swing.JFrame {
+    private boolean framePFisicaOpen = false;
     private boolean frameCadPJuridicaOpen = false;
 
     /**
      * Creates new form RegistroPessoaFisica
      */
-    public Cliente() {
+    public ClienteJF() {
         initComponents();
     }
-    
-     public MaskFormatter Mascara(String Mascara){
-        MaskFormatter F_Mascara = new MaskFormatter();
-        try{
-            F_Mascara.setMask(Mascara); //Atribui a mascara
-            F_Mascara.setPlaceholderCharacter(' '); //Caracter para preencimento 
-        }
-        catch (Exception excecao) {
-        excecao.printStackTrace();
-        } 
-        return F_Mascara;
- }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,13 +34,12 @@ public class Cliente extends javax.swing.JFrame {
 
         cpfLogErro = new javax.swing.JLabel();
         senhaLogErro = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         btnPFisica = new javax.swing.JButton();
         btnPJuridica = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(102, 102, 255));
+        setBackground(new java.awt.Color(255, 255, 255));
 
         cpfLogErro.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         cpfLogErro.setForeground(new java.awt.Color(255, 0, 0));
@@ -61,20 +47,10 @@ public class Cliente extends javax.swing.JFrame {
         senhaLogErro.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         senhaLogErro.setForeground(new java.awt.Color(255, 0, 0));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 96, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 213, Short.MAX_VALUE)
-        );
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Clientes");
 
+        btnPFisica.setBackground(new java.awt.Color(153, 153, 255));
         btnPFisica.setText("Pessoa Física");
         btnPFisica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,6 +58,7 @@ public class Cliente extends javax.swing.JFrame {
             }
         });
 
+        btnPJuridica.setBackground(new java.awt.Color(153, 153, 255));
         btnPJuridica.setText("Pessoa Jurídica");
         btnPJuridica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,34 +75,30 @@ public class Cliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(senhaLogErro, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cpfLogErro, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(192, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(115, 115, 115)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnPFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addComponent(btnPJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel4)
                         .addGap(91, 91, 91)))
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel4)
-                        .addGap(27, 27, 27)
-                        .addComponent(btnPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(btnPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel4)
+                .addGap(27, 27, 27)
+                .addComponent(btnPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(btnPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
                 .addComponent(cpfLogErro, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(senhaLogErro, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -137,10 +110,10 @@ public class Cliente extends javax.swing.JFrame {
 
     private void btnPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPFisicaActionPerformed
         // TODO add your handling code here:
-        CadastroPFisica telaCadPFisica = new  CadastroPFisica();
-        if (!frameCadPFisicaOpen){
-            telaCadPFisica.setVisible(true);
-            frameCadPFisicaOpen = true;
+        PessoaFisicaJF telaPFisicaJF = new  PessoaFisicaJF();
+        if (!framePFisicaOpen){
+            telaPFisicaJF.setVisible(true);
+            framePFisicaOpen = true;
         }
     }//GEN-LAST:event_btnPFisicaActionPerformed
 
@@ -169,14 +142,18 @@ public class Cliente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClienteJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClienteJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClienteJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClienteJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -185,7 +162,7 @@ public class Cliente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Cliente().setVisible(true);
+                new ClienteJF().setVisible(true);
             }
         });
     }
@@ -195,7 +172,6 @@ public class Cliente extends javax.swing.JFrame {
     private javax.swing.JButton btnPJuridica;
     private javax.swing.JLabel cpfLogErro;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel senhaLogErro;
     // End of variables declaration//GEN-END:variables
 }

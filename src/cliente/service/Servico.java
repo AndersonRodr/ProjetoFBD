@@ -6,6 +6,7 @@ import cliente.dominio.PessoaFisica;
 import cliente.dominio.PessoaJuridica;
 import java.sql.SQLException;
 import java.util.Calendar;
+import javax.swing.JOptionPane;
 
 public class Servico {
     ClientePessoaDAO dao = new ClientePessoaDAO();
@@ -101,5 +102,19 @@ public class Servico {
         int idCliente = dao.buscarIdCliente();
         dao.inserirPJuridica(idCliente, pessoa);
         return true;
+    }
+    
+    public Cliente buscarPessoaFisica(String cpf){
+        PessoaFisica pessoa = dao.buscarPessoaFisica(cpf);
+        Cliente cliente = new Cliente();
+        if(pessoa == null){
+            JOptionPane.showMessageDialog(null, "Cliente não encontrado");
+            return null;
+        }
+        else{
+            cliente = dao.buscarCliente(pessoa.getId());
+            cliente.setPFisica(pessoa);
+        }
+        return cliente;
     }
 }

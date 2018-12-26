@@ -12,6 +12,13 @@ public class PessoaFisica {
     private String sexo;
     private String dataNascimento;
     private String cpf;
+    
+    public int getId(){
+        return idCliente;
+    }
+    public void setId(int id){
+        idCliente = id;
+    }
 
     public String getSexo() {
         return sexo;

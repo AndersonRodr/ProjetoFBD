@@ -114,7 +114,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPFisicaActionPerformed
-        Cliente telaPFisica = new  Cliente();
+        ClienteJF telaPFisica = new  ClienteJF();
         if (!frameLoginOpen){
             telaPFisica.setVisible(true);  
             frameLoginOpen = true;

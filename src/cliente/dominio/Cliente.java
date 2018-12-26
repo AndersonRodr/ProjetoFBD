@@ -31,11 +31,11 @@ public class Cliente {
         this.endereco = endereco;
     }
     
-        public PessoaFisica getpFisica() {
+    public PessoaFisica getPFisica() {
         return pFisica;
     }
 
-    public void setpFisica(PessoaFisica pFisica) {
+    public void setPFisica(PessoaFisica pFisica) {
         this.pFisica = pFisica;
     }
 
@@ -43,7 +43,7 @@ public class Cliente {
         return pJuridica;
     }
 
-    public void setpJuridica(PessoaJuridica pJuridica) {
+    public void setPJuridica(PessoaJuridica pJuridica) {
         this.pJuridica = pJuridica;
     }
 }
