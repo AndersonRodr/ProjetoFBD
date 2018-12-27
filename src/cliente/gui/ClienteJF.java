@@ -40,6 +40,7 @@ public class ClienteJF extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         cpfLogErro.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         cpfLogErro.setForeground(new java.awt.Color(255, 0, 0));

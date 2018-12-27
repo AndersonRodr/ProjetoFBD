@@ -82,7 +82,7 @@ public class VeiculoDao {
 }
     
     public ArrayList<Revisao> getRevisao(int tipoVeiculo){
-        ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
+        ArrayList<Revisao> revisoes = new ArrayList<>();
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
         ResultSet rs = null;
