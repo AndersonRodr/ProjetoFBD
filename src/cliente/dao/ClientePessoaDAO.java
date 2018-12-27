@@ -183,47 +183,36 @@ public class ClientePessoaDAO {
     }
     
     public boolean deletarPessoaFisica(int id){
-        PessoaFisica pessoa = new PessoaFisica();
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
-        ResultSet rs = null;
         try {
-
-            if (rs.next()){
-                statement = connection.prepareStatement("Delete from pessoa_fisica where Id_Cliente = '" + id + "'");
-                rs = statement.executeQuery();
-            }
-            else{
-                return false;
-            }           
+            statement = connection.prepareStatement("Delete from pessoa_fisica where Id_Cliente = ?");
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao deletar pessoa: " + ex);
         }
         finally{
-            DataBaseConnection.fecharConexao(connection, statement, rs);
+            DataBaseConnection.fecharConexao(connection, statement);
         }
-        return true;
+        return false;
     }
     
     public boolean deletarCliente(int id){
-        PessoaFisica pessoa = new PessoaFisica();
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
-        ResultSet rs = null;
         try {
-            if (rs.next()){
-                statement = connection.prepareStatement("Delete from cliente where id_Cliente = '" + id + "'");
-                rs = statement.executeQuery();
-            }
-            else{
-                return false;
-            }           
+            statement = connection.prepareStatement("Delete from cliente where id_Cliente = ?");
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;          
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao deletar cliente: " + ex);
         }
         finally{
-            DataBaseConnection.fecharConexao(connection, statement, rs);
+            DataBaseConnection.fecharConexao(connection, statement);
         }
-        return true;
+        return false;
     }
 }

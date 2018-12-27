@@ -11,8 +11,8 @@ package cliente.dominio;
  */
 public class Motorista {
     private int cnh;
-    private int cliente;
-    private String dataNascimento;
+    private int id_cliente;
+    private String dataVencimento;
     private int rg;
     private String nome;
 
@@ -25,19 +25,19 @@ public class Motorista {
     }
 
     public int getCliente() {
-        return cliente;
+        return id_cliente;
     }
 
     public void setCliente(int cliente) {
-        this.cliente = cliente;
+        this.id_cliente = cliente;
     }
 
     public String getDataNascimento() {
-        return dataNascimento;
+        return dataVencimento;
     }
 
     public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
+        this.dataVencimento = dataNascimento;
     }
 
     public int getRg() {

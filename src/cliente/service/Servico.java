@@ -117,4 +117,12 @@ public class Servico {
         }
         return cliente;
     }
+    
+    public boolean deletarClientePFisica(Cliente cliente){
+        boolean deletou = false;
+        if (dao.deletarPessoaFisica(cliente.getId())){
+            deletou = dao.deletarCliente(cliente.getId());
+        }        
+        return deletou;
+    }
 }
