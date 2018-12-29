@@ -29,8 +29,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private PessoaFisica pessoa = new PessoaFisica();
     private Motorista motorista = new Motorista();
     private ArrayList<Motorista> listaMotoristas = new ArrayList<Motorista>();
-
-
     
     public PessoaFisicaJF() {
         initComponents();
@@ -435,7 +433,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     }//GEN-LAST:event_cnhMotoActionPerformed
 
     private void btnCadMotoristaPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadMotoristaPFisicaActionPerformed
-        if (cliente != null){
+        if (!service.isEmpty(buscaNomePFisica.getText())){
             if (verificarCampos()){
                 motorista.setCnh(parseInt(cnhMoto.getText()));
                 motorista.setIdCliente(cliente.getId());
@@ -496,7 +494,17 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         nomeMoto.setText("");
         rgMoto.setText("");
     }
-    
+
+    private String formatarData(String nasc){
+        String ano = nasc.substring(6, 10);
+
+        String dia = nasc.substring(0, 2);
+
+        String mes = nasc.substring(3, 5);
+
+        return ano+"-"+mes+"-"+dia;
+    }
+        
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -563,4 +571,5 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private javax.swing.JTable tabelaMotoristasPFisica;
     private javax.swing.JFormattedTextField vencimentoMoto;
     // End of variables declaration//GEN-END:variables
+
 }
