@@ -434,21 +434,21 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
 
     private void btnCadMotoristaPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadMotoristaPFisicaActionPerformed
         if (!service.isEmpty(buscaNomePFisica.getText())){
-            if (verificarCampos()){
-                motorista.setCnh(parseInt(cnhMoto.getText()));
-                motorista.setIdCliente(cliente.getId());
-                motorista.setNome(nomeMoto.getText());
-                motorista.setRg(parseInt(rgMoto.getText()));
-                motorista.setDataVencimento(formatarDataEntrada(vencimentoMoto.getText()));
-                if (service.inserirMotorista(motorista)){
-                    limparCamposMoto();
-                    JOptionPane.showMessageDialog(null, "Motorista cadastrado");                    
+            if (verificarCampos()){ 
+                motorista.setCnh(parseInt(cnhMoto.getText())); 
+                motorista.setIdCliente(cliente.getId()); 
+                motorista.setNome(nomeMoto.getText()); 
+                motorista.setRg(parseInt(rgMoto.getText())); 
+                motorista.setDataVencimento(formatarDataEntrada(vencimentoMoto.getText())); 
+                if (service.inserirMotorista(motorista)){ 
+                    limparCamposMoto(); 
+                    JOptionPane.showMessageDialog(null, "Motorista cadastrado");                     
 //                    preencherTabela();
                 }
             } 
         }
-        else{
-            JOptionPane.showMessageDialog(null, "Busque um cliente por favor");
+        else{ 
+            JOptionPane.showMessageDialog(null, "Busque um cliente por favor"); 
         }
     }//GEN-LAST:event_btnCadMotoristaPFisicaActionPerformed
 
@@ -467,43 +467,33 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         }
     }
     
-    private String formatarDataEntrada(String nasc){
-        return formatarDataEntrada(nasc);
+    private String formatarDataEntrada (String nasc){ 
+        return service.formatarDataEntrada(nasc); 
     }
     
-    private void preencherTabela(){
-        DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
-        tabelinha.setNumRows(0);
-        if (cliente != null){
-            listaMotoristas = service.getListaMotoristas(cliente.getId());
-            if (listaMotoristas.size() > 0 ){
-                for (Motorista m: listaMotoristas){
-                    tabelinha.addRow(new Object[] {
-                       m.getNome(),
-                       m.getCnh(),
-                       formatarDataSaida(m.getDataVencimento()),
-                       m.getRg()
-                    });
-                }
-            }
-        }
-    }
-    
-    private void limparCamposMoto(){
-        cnhMoto.setText("");
-        nomeMoto.setText("");
-        rgMoto.setText("");
-    }
-
-    private String formatarData(String nasc){
-        String ano = nasc.substring(6, 10);
-
-        String dia = nasc.substring(0, 2);
-
-        String mes = nasc.substring(3, 5);
-
-        return ano+"-"+mes+"-"+dia;
-    }
+    private void preencherTabela(){ 
+        DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPFisica.getModel(); 
+        tabelinha.setNumRows(0); 
+        if (cliente != null){ 
+            listaMotoristas = service.getListaMotoristas(cliente.getId());  
+            if (listaMotoristas.size() > 0 ){   
+                for (Motorista m: listaMotoristas){ 
+                    tabelinha.addRow(new Object[] { 
+                       m.getNome(), 
+                       m.getCnh(), 
+                       formatarDataSaida(m.getDataVencimento()), 
+                       m.getRg() 
+                    }); 
+                } 
+            } 
+        } 
+    } 
+     
+    private void limparCamposMoto(){ 
+        cnhMoto.setText(""); 
+        nomeMoto.setText(""); 
+        rgMoto.setText(""); 
+    } 
         
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
