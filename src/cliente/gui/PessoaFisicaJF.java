@@ -7,9 +7,11 @@ package cliente.gui;
 
 import cliente.dao.ClientePessoaDAO;
 import cliente.dominio.Cliente;
+import cliente.dominio.Motorista;
 import cliente.dominio.PessoaFisica;
 import cliente.service.Servico;
 import cliente.service.ServicoClienteCPF;
+import static java.lang.Integer.parseInt;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,6 +24,8 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private Servico service = new Servico();
     private Cliente cliente = new Cliente();
     private PessoaFisica pessoa = new PessoaFisica();
+    private Motorista motorista = new Motorista();
+
 
     
     public PessoaFisicaJF() {
@@ -55,14 +59,14 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         excluirMotorista = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        nomeMoto = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        cnhMoto = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        rgMoto = new javax.swing.JTextField();
         btnCadMotoristaPFisica = new javax.swing.JButton();
+        vencimentoMoto = new javax.swing.JFormattedTextField();
 
         jMenu1.setText("jMenu1");
 
@@ -229,9 +233,9 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
 
         jLabel8.setText("CNH:");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        cnhMoto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                cnhMotoActionPerformed(evt);
             }
         });
 
@@ -245,6 +249,12 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 btnCadMotoristaPFisicaActionPerformed(evt);
             }
         });
+
+        try {
+            vencimentoMoto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -262,41 +272,41 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addGap(0, 0, Short.MAX_VALUE))
-                                        .addComponent(jTextField1))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel10))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(2, 2, 2)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel8))
-                                    .addGap(26, 26, 26)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel9)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(nomeMoto))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rgMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(2, 2, 2)
+                                        .addComponent(cnhMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel8))
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(vencimentoMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(191, 191, 191)
                         .addComponent(btnCadMotoristaPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
@@ -311,19 +321,20 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jTextField4))
+                        .addComponent(rgMoto))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cnhMoto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(vencimentoMoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(26, 26, 26))
+                            .addComponent(nomeMoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(btnCadMotoristaPFisica)
                 .addGap(36, 36, 36))
@@ -419,14 +430,49 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnApagarPFisicaActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void cnhMotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnhMotoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_cnhMotoActionPerformed
 
     private void btnCadMotoristaPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadMotoristaPFisicaActionPerformed
-        
+        if (verificarCampos()){
+            motorista.setCnh(parseInt(cnhMoto.getText()));
+            motorista.setIdCliente(cliente.getId());
+            motorista.setNome(nomeMoto.getText());
+            motorista.setRg(parseInt(rgMoto.getText()));
+            motorista.setDataVencimento(formatarData(vencimentoMoto.getText()));
+            if (service.inserirMotorista(motorista)){
+                JOptionPane.showMessageDialog(null, "Motorista cadastrado");
+            }
+        }
     }//GEN-LAST:event_btnCadMotoristaPFisicaActionPerformed
 
+    private boolean verificarCampos(){
+        if (service.isEmpty(nomeMoto.getText())){
+            return false;
+        }
+        else if (service.isEmpty(rgMoto.getText())){
+            return false;
+        }
+        else if (service.isEmpty(cnhMoto.getText())){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    
+    private String formatarData(String nasc){
+        String ano = nasc.substring(6, 10);
+
+        String dia = nasc.substring(0, 2);
+
+        String mes = nasc.substring(3, 5);
+
+        return ano+"-"+mes+"-"+dia;
+    }
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -469,6 +515,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private javax.swing.JLabel buscaNascPFisica;
     private javax.swing.JLabel buscaNomePFisica;
     private javax.swing.JFormattedTextField buscarCPF;
+    private javax.swing.JTextField cnhMoto;
     private javax.swing.JButton excluirMotorista;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -488,9 +535,8 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField nomeMoto;
+    private javax.swing.JTextField rgMoto;
+    private javax.swing.JFormattedTextField vencimentoMoto;
     // End of variables declaration//GEN-END:variables
 }

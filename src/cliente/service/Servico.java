@@ -2,6 +2,7 @@ package cliente.service;
 
 import cliente.dao.ClientePessoaDAO;
 import cliente.dominio.Cliente;
+import cliente.dominio.Motorista;
 import cliente.dominio.PessoaFisica;
 import cliente.dominio.PessoaJuridica;
 import java.sql.SQLException;
@@ -124,5 +125,29 @@ public class Servico {
             deletou = dao.deletarCliente(cliente.getId());
         }        
         return deletou;
+    }
+    
+    public boolean inserirMotorista(Motorista motorista){
+        if (!verificarMotorista(motorista)){
+            if (dao.inserirMotorista(motorista)){
+                return true;
+            }
+            else{                
+                return false;
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Motorista já cadastrado");
+            return false;
+        }
+    }
+    
+    public boolean verificarMotorista(Motorista motorista){
+        if(dao.verificarCnh(motorista.getCnh(), motorista.getIdCliente())){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

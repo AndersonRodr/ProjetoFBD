@@ -1,6 +1,7 @@
 package cliente.dao;
 
 import cliente.dominio.Cliente;
+import cliente.dominio.Motorista;
 import cliente.dominio.PessoaFisica;
 import cliente.dominio.PessoaJuridica;
 import java.sql.Connection;
@@ -214,5 +215,48 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }
         return false;
+    }
+    
+    public boolean verificarCnh(int cnh, int idCliente){
+        boolean result = false; 
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM motorista WHERE cnh ='" + cnh + "'" + 
+                    "AND id_cliente='" + idCliente + "'");
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                result = true;
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar CNH: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return result;
+    }
+    
+    public boolean inserirMotorista(Motorista motorista){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("INSERT INTO motorista (cnh, id_cliente, dataVencimento, rg, nome)"
+                    + "VALUES(?,?,?,?,?)");
+            statement.setInt(1, motorista.getCnh());
+            statement.setInt(2, motorista.getIdCliente());
+            statement.setString(3, motorista.getDataVencimento());
+            statement.setInt(4, motorista.getRg());
+            statement.setString(5, motorista.getNome());
+            statement.executeUpdate();
+            return true;
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível cadastrar motorista: " + ex);
+            return false;
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
     }
 }

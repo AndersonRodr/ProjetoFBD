@@ -24,19 +24,19 @@ public class Motorista {
         this.cnh = cnh;
     }
 
-    public int getCliente() {
+    public int getIdCliente() {
         return id_cliente;
     }
 
-    public void setCliente(int cliente) {
+    public void setIdCliente(int cliente) {
         this.id_cliente = cliente;
     }
 
-    public String getDataNascimento() {
+    public String getDataVencimento() {
         return dataVencimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataVencimento(String dataNascimento) {
         this.dataVencimento = dataNascimento;
     }
 
