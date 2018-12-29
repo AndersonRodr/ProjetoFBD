@@ -6,6 +6,7 @@ import cliente.dominio.Motorista;
 import cliente.dominio.PessoaFisica;
 import cliente.dominio.PessoaJuridica;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 
@@ -49,6 +50,29 @@ public class Servico {
         else {
             return false;
         }
+    }
+    
+    public String formatarCpf(String cpf){
+        String cpf1 = cpf.substring(0,3);
+        String cpf2 = cpf.substring(3,6);
+        String cpf3 = cpf.substring(6,9);
+        String cpf4 = cpf.substring(9,11);
+        return cpf1 + "." + cpf2 + "." + cpf3 + "-" + cpf4;
+    }
+    
+    public String formatarDataSaida(String nasc){
+        String ano = nasc.substring(0, 4);
+        String dia = nasc.substring(8, 10);
+        String mes = nasc.substring(5, 7);
+        String nascimento = dia+"/"+mes+"/"+ano;
+        return nascimento;
+    }
+    
+    public String formatarDataEntrada(String nasc){
+        String ano = nasc.substring(6, 10);
+        String dia = nasc.substring(0, 2);
+        String mes = nasc.substring(3, 5);
+        return ano+"-"+mes+"-"+dia;
     }
     
     public boolean cadClientePFisica(Cliente cliente, PessoaFisica pessoa) throws SQLException{
@@ -149,5 +173,10 @@ public class Servico {
         else{
             return false;
         }
+    }
+    
+    public ArrayList<Motorista> getListaMotoristas(int idCliente){
+        ArrayList<Motorista> listaMotorista = dao.getListaMotorista(idCliente);
+        return listaMotorista;
     }
 }

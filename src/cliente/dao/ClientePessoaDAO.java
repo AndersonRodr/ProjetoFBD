@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -258,5 +259,31 @@ public class ClientePessoaDAO {
         finally{
             DataBaseConnection.fecharConexao(connection, statement);
         }
+    }
+    
+    public ArrayList<Motorista> getListaMotorista(int idCliente){
+        ArrayList<Motorista> listaMotoristas = new ArrayList<Motorista>();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("Select * from motorista where id_cliente = '" + idCliente + "'");
+            rs = statement.executeQuery(); 
+            while (rs.next()){
+                Motorista motorista = new Motorista();
+                motorista.setCnh(rs.getInt("cnh"));
+                motorista.setIdCliente(rs.getInt("id_cliente"));
+                motorista.setDataVencimento(rs.getString("data_vencimento"));
+                motorista.setRg(rs.getInt("rg"));
+                motorista.setNome(rs.getString("nome"));
+                listaMotoristas.add(motorista);
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar motoristas: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return listaMotoristas;
     }
 }

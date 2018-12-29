@@ -12,7 +12,10 @@ import cliente.dominio.PessoaFisica;
 import cliente.service.Servico;
 import cliente.service.ServicoClienteCPF;
 import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -25,11 +28,14 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private Cliente cliente = new Cliente();
     private PessoaFisica pessoa = new PessoaFisica();
     private Motorista motorista = new Motorista();
+    private ArrayList<Motorista> listaMotoristas = new ArrayList<Motorista>();
 
 
     
     public PessoaFisicaJF() {
         initComponents();
+//        DefaultTableModel modelo = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
+//        tabelaMotoristasPFisica.setRowSorter(new TableRowSorter(modelo));
     }
 
     @SuppressWarnings("unchecked")
@@ -55,7 +61,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         buscarCPF = new javax.swing.JFormattedTextField();
         btnBuscarCpf = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaMotoristasPFisica = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         excluirMotorista = new javax.swing.JButton();
@@ -207,7 +213,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addContainerGap(99, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaMotoristasPFisica.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -215,15 +221,15 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 "Nome", "CNH", "Vencimento", "RG"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaMotoristasPFisica);
 
         jLabel6.setText("Motoristas");
 
@@ -367,12 +373,13 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
 
             if (cliente != null){
                 buscaNomePFisica.setText(cliente.getNome());
-                buscaNascPFisica.setText(formatarNasc(cliente.getPFisica().getDataNascimento()));
+                buscaNascPFisica.setText(formatarDataSaida(cliente.getPFisica().getDataNascimento()));
                 buscaCpfPFisica.setText(formatarCpf(cliente.getPFisica().getCpf()));
                 buscaEndePFisica.setText(cliente.getEndereco());
+//                preencherTabela();
             }
             else{
-                limparCampos();
+                limparCamposPessoa();
             }
         }
     }//GEN-LAST:event_btnBuscarCpfActionPerformed
@@ -387,23 +394,15 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         return true;
     }
     
-    private String formatarNasc(String nasc){
-        String ano = nasc.substring(0, 4);
-        String dia = nasc.substring(8, 10);
-        String mes = nasc.substring(5, 7);
-        String nascimento = dia+"/"+mes+"/"+ano;
-        return nascimento;
+    private String formatarDataSaida(String nasc){
+        return service.formatarDataSaida(nasc);
     }
     
     private String formatarCpf(String cpf){
-        String cpf1 = cpf.substring(0,3);
-        String cpf2 = cpf.substring(3,6);
-        String cpf3 = cpf.substring(6,9);
-        String cpf4 = cpf.substring(9,11);
-        return cpf1 + "." + cpf2 + "." + cpf3 + "-" + cpf4;
+        return service.formatarCpf(cpf);
     }
     
-    private void limparCampos(){
+    private void limparCamposPessoa(){
         buscaNomePFisica.setText("");
         buscaNascPFisica.setText("");
         buscaCpfPFisica.setText("");
@@ -421,8 +420,9 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private void btnApagarPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarPFisicaActionPerformed
         if (!service.isEmpty(buscaNomePFisica.getText())){
             if (service.deletarClientePFisica(cliente)){
+                cliente = null;
                 JOptionPane.showMessageDialog(null, "Cliente excluído");
-                limparCampos();
+                limparCamposPessoa();
             }
             else{
                 JOptionPane.showMessageDialog(null, "O cliente não existe na base de dados");
@@ -435,15 +435,22 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     }//GEN-LAST:event_cnhMotoActionPerformed
 
     private void btnCadMotoristaPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadMotoristaPFisicaActionPerformed
-        if (verificarCampos()){
-            motorista.setCnh(parseInt(cnhMoto.getText()));
-            motorista.setIdCliente(cliente.getId());
-            motorista.setNome(nomeMoto.getText());
-            motorista.setRg(parseInt(rgMoto.getText()));
-            motorista.setDataVencimento(formatarData(vencimentoMoto.getText()));
-            if (service.inserirMotorista(motorista)){
-                JOptionPane.showMessageDialog(null, "Motorista cadastrado");
-            }
+        if (cliente != null){
+            if (verificarCampos()){
+                motorista.setCnh(parseInt(cnhMoto.getText()));
+                motorista.setIdCliente(cliente.getId());
+                motorista.setNome(nomeMoto.getText());
+                motorista.setRg(parseInt(rgMoto.getText()));
+                motorista.setDataVencimento(formatarDataEntrada(vencimentoMoto.getText()));
+                if (service.inserirMotorista(motorista)){
+                    limparCamposMoto();
+                    JOptionPane.showMessageDialog(null, "Motorista cadastrado");                    
+//                    preencherTabela();
+                }
+            } 
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Busque um cliente por favor");
         }
     }//GEN-LAST:event_btnCadMotoristaPFisicaActionPerformed
 
@@ -462,16 +469,33 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         }
     }
     
-    private String formatarData(String nasc){
-        String ano = nasc.substring(6, 10);
-
-        String dia = nasc.substring(0, 2);
-
-        String mes = nasc.substring(3, 5);
-
-        return ano+"-"+mes+"-"+dia;
+    private String formatarDataEntrada(String nasc){
+        return formatarDataEntrada(nasc);
     }
     
+    private void preencherTabela(){
+        DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
+        tabelinha.setNumRows(0);
+        if (cliente != null){
+            listaMotoristas = service.getListaMotoristas(cliente.getId());
+            if (listaMotoristas.size() > 0 ){
+                for (Motorista m: listaMotoristas){
+                    tabelinha.addRow(new Object[] {
+                       m.getNome(),
+                       m.getCnh(),
+                       formatarDataSaida(m.getDataVencimento()),
+                       m.getRg()
+                    });
+                }
+            }
+        }
+    }
+    
+    private void limparCamposMoto(){
+        cnhMoto.setText("");
+        nomeMoto.setText("");
+        rgMoto.setText("");
+    }
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -534,9 +558,9 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField nomeMoto;
     private javax.swing.JTextField rgMoto;
+    private javax.swing.JTable tabelaMotoristasPFisica;
     private javax.swing.JFormattedTextField vencimentoMoto;
     // End of variables declaration//GEN-END:variables
 }
