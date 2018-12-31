@@ -242,7 +242,7 @@ public class ClientePessoaDAO {
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement("INSERT INTO motorista (cnh, id_cliente, dataVencimento, rg, nome)"
+            statement = connection.prepareStatement("INSERT INTO motorista (cnh, id_cliente, data_vencimento, rg, nome)"
                     + "VALUES(?,?,?,?,?)");
             statement.setInt(1, motorista.getCnh());
             statement.setInt(2, motorista.getIdCliente());
@@ -285,5 +285,63 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement, rs);
         }
         return listaMotoristas;
+    }
+    
+    public boolean editarCliente(Cliente cliente){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE cliente set nome = ? ,endereco = ? where id_Cliente = ?");
+            statement.setString(1, cliente.getNome());
+            statement.setString(2, cliente.getEndereco());
+            statement.setInt(3, cliente.getId());
+            statement.executeUpdate();
+            return true;
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível editar cliente: " + ex);
+            return false;
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+    }
+        
+    public boolean editarPFisica(int idCliente, PessoaFisica pessoa){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE pessoa_fisica set data_nascimento = ?, cpf = ?, sexo = ? where Id_Cliente = ?");
+            statement.setString(1, pessoa.getDataNascimento());
+            statement.setString(2, pessoa.getCpf());
+            statement.setString(3, pessoa.getSexo());
+            statement.setInt(4, idCliente);
+            statement.executeUpdate();
+            return true;
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível editar pessoa física: " + ex);
+            return false;
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+    } 
+    
+    public boolean deletarMotorista(int id){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("Delete from motorista where id_cliente = ?");
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar cliente: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
     }
 }

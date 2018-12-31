@@ -325,10 +325,10 @@ public class CadastroPFisica extends javax.swing.JFrame {
     
     private void limparCampos(){
         nomeCadPFisica.setText("");
-        cpfCadPFisica.setText("   .   .   -  ");
+        cpfCadPFisica.setText(null);
         checkPFisicaM.disable();
         checkPFisicaF.disable();
-        nascCadPFisica.setText("  /  /    ");
+        nascCadPFisica.setText(null);
         enderecoCadPFisica.setText("");
     }
     

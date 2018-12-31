@@ -12,6 +12,7 @@ import cliente.dominio.PessoaFisica;
 import cliente.service.Servico;
 import cliente.service.ServicoClienteCPF;
 import static java.lang.Integer.parseInt;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -29,11 +30,13 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private PessoaFisica pessoa = new PessoaFisica();
     private Motorista motorista = new Motorista();
     private ArrayList<Motorista> listaMotoristas = new ArrayList<Motorista>();
+    private String sexo;
+    private boolean buscou;
     
     public PessoaFisicaJF() {
         initComponents();
-//        DefaultTableModel modelo = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
-//        tabelaMotoristasPFisica.setRowSorter(new TableRowSorter(modelo));
+        DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
+        tabelaMotoristasPFisica.setRowSorter(new TableRowSorter(tabelinha));
     }
 
     @SuppressWarnings("unchecked")
@@ -44,15 +47,19 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        buscaNomePFisica = new javax.swing.JLabel();
-        buscaNascPFisica = new javax.swing.JLabel();
-        buscaEndePFisica = new javax.swing.JLabel();
-        buscaCpfPFisica = new javax.swing.JLabel();
-        btnApagarPFisica = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        btnEditPFisica = new javax.swing.JButton();
+        buscaNomePFisica = new javax.swing.JTextField();
+        buscaEndePFisica = new javax.swing.JTextField();
+        btnApagarPFisica = new javax.swing.JButton();
+        buscaCpfPFisica = new javax.swing.JFormattedTextField();
+        buscaNascPFisica = new javax.swing.JFormattedTextField();
+        buscaSexoMPFisica = new javax.swing.JRadioButton();
+        jLabel11 = new javax.swing.JLabel();
+        buscaSexoFPFisica = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -82,13 +89,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
-        btnApagarPFisica.setText("Excluir Cliente");
-        btnApagarPFisica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnApagarPFisicaActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Nome:");
 
@@ -101,28 +101,86 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Endereço:");
 
+        btnEditPFisica.setText("Editar Cliente");
+        btnEditPFisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditPFisicaActionPerformed(evt);
+            }
+        });
+
+        btnApagarPFisica.setText("Excluir Cliente");
+        btnApagarPFisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApagarPFisicaActionPerformed(evt);
+            }
+        });
+
+        try {
+            buscaCpfPFisica.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            buscaNascPFisica.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        buscaSexoMPFisica.setBackground(new java.awt.Color(204, 204, 255));
+        buscaSexoMPFisica.setText("M");
+        buscaSexoMPFisica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscaSexoMPFisicaActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel11.setText("Sexo:");
+
+        buscaSexoFPFisica.setBackground(new java.awt.Color(204, 204, 255));
+        buscaSexoFPFisica.setText("F");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addComponent(btnApagarPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnApagarPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buscaNomePFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(buscaSexoMPFisica)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buscaSexoFPFisica)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buscaNomePFisica)
+                            .addComponent(buscaEndePFisica)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(buscaCpfPFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buscaNascPFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buscaEndePFisica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(buscaNascPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buscaCpfPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))))
+                        .addGap(21, 21, 21))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,22 +188,32 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buscaNomePFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buscaNomePFisica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buscaNascPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buscaCpfPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buscaNascPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buscaCpfPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jLabel5)
+                .addGap(4, 4, 4)
+                .addComponent(buscaEndePFisica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buscaEndePFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addGap(4, 4, 4)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buscaSexoMPFisica)
+                    .addComponent(buscaSexoFPFisica))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditPFisica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnApagarPFisica)
-                .addGap(76, 76, 76))
+                .addContainerGap())
         );
 
         jButton1.setBackground(new java.awt.Color(153, 153, 255));
@@ -180,8 +248,8 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(69, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
@@ -195,12 +263,12 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                                 .addComponent(jLabel1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addGap(67, 67, 67))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buscarCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -208,7 +276,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addComponent(btnBuscarCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabelaMotoristasPFisica.setModel(new javax.swing.table.DefaultTableModel(
@@ -278,7 +346,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                         .addGap(19, 19, 19)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -310,7 +378,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 269, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
@@ -348,7 +416,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,9 +440,11 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
             if (cliente != null){
                 buscaNomePFisica.setText(cliente.getNome());
                 buscaNascPFisica.setText(formatarDataSaida(cliente.getPFisica().getDataNascimento()));
-                buscaCpfPFisica.setText(formatarCpf(cliente.getPFisica().getCpf()));
+                buscaCpfPFisica.setText(formatarCpfEntrada(cliente.getPFisica().getCpf()));
                 buscaEndePFisica.setText(cliente.getEndereco());
-//                preencherTabela();
+                setarSexoBusca(cliente.getPFisica());
+                buscou = true;
+                preencherTabela();
             }
             else{
                 limparCamposPessoa();
@@ -382,6 +452,15 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarCpfActionPerformed
 
+    private void setarSexoBusca(PessoaFisica pFisica){
+        if (pFisica.getSexo().equals("M")){
+            buscaSexoMPFisica.setSelected(true);
+        }
+        else {
+            buscaSexoFPFisica.setSelected(true);
+        }
+    }
+    
     private boolean validarCpf(){       
         String strCpf = buscarCPF.getText();
         ServicoClienteCPF cpf = new ServicoClienteCPF(strCpf, true);        
@@ -396,13 +475,17 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         return service.formatarDataSaida(nasc);
     }
     
-    private String formatarCpf(String cpf){
-        return service.formatarCpf(cpf);
+    private String formatarCpfSaida(String cpf){
+        return service.formatarCpfSaida(cpf);
+    }
+    
+    private String formatarCpfEntrada(String cpf){
+        return service.formatarCpfEntrada(cpf);
     }
     
     private void limparCamposPessoa(){
         buscaNomePFisica.setText("");
-        buscaNascPFisica.setText("");
+        buscaNascPFisica.setText(null);
         buscaCpfPFisica.setText("");
         buscaEndePFisica.setText("");
     }
@@ -421,6 +504,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 cliente = null;
                 JOptionPane.showMessageDialog(null, "Cliente excluído");
                 limparCamposPessoa();
+                preencherTabela();
             }
             else{
                 JOptionPane.showMessageDialog(null, "O cliente não existe na base de dados");
@@ -443,7 +527,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 if (service.inserirMotorista(motorista)){ 
                     limparCamposMoto(); 
                     JOptionPane.showMessageDialog(null, "Motorista cadastrado");                     
-//                    preencherTabela();
+                    preencherTabela();
                 }
             } 
         }
@@ -451,6 +535,38 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Busque um cliente por favor"); 
         }
     }//GEN-LAST:event_btnCadMotoristaPFisicaActionPerformed
+
+    private void btnEditPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPFisicaActionPerformed
+        if (buscou){                   
+            if (validarCampos()){
+                cliente.setNome(buscaNomePFisica.getText());
+                cliente.setEndereco(buscaEndePFisica.getText());           
+
+    //            PessoaFisica pessoa = new PessoaFisica();
+                pessoa.setDataNascimento(formatarDataEntrada(buscaNascPFisica.getText()));
+                pessoa.setCpf(formatarCpfEntrada(buscaCpfPFisica.getText()));
+                pessoa.setSexo(sexo);
+                try {
+                    if (service.alterarClientePFisica(cliente, pessoa)){
+                        JOptionPane.showMessageDialog(null, "Cliente Editado!");
+                        buscou = false;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Erro ao realizar alteração.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro inesperado" + ex);
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Busque um cliente");
+        }
+    }//GEN-LAST:event_btnEditPFisicaActionPerformed
+
+    private void buscaSexoMPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaSexoMPFisicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscaSexoMPFisicaActionPerformed
 
     private boolean verificarCampos(){
         if (service.isEmpty(nomeMoto.getText())){
@@ -492,7 +608,9 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private void limparCamposMoto(){ 
         cnhMoto.setText(""); 
         nomeMoto.setText(""); 
-        rgMoto.setText(""); 
+        rgMoto.setText("");
+        vencimentoMoto.setText(null);
+        
     } 
         
     public static void main(String args[]) {
@@ -527,21 +645,67 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    private boolean validarCampos(){
+        String strCpf = buscaCpfPFisica.getText();
+        ServicoClienteCPF cpf = new ServicoClienteCPF(strCpf, true);
+        
+        if (service.isEmpty(String.valueOf(buscaNomePFisica.getText()))){
+            JOptionPane.showMessageDialog(null, "Nome inválido");
+            return false;
+        }
+        else if (!cpf.isCPF()){
+            JOptionPane.showMessageDialog(null, "CPF inválido");
+            return false;
+        }
+        else if (!service.validarIdade(buscaNascPFisica.getText())){
+            JOptionPane.showMessageDialog(null, "Precisa ser maior de idade");
+            return false;
+        }
+        
+        else if (buscaSexoMPFisica.isSelected() && buscaSexoFPFisica.isSelected()){
+            JOptionPane.showMessageDialog(null, "Escolha apenas um sexo");
+            return false;
+        }
+        else if (!buscaSexoMPFisica.isSelected() && !buscaSexoFPFisica.isSelected()){
+            JOptionPane.showMessageDialog(null, "Escolha um sexo");
+            return false;
+        }
+        
+        else if (service.isEmpty(String.valueOf(buscaEndePFisica.getText()))){
+            JOptionPane.showMessageDialog(null, "Endereço inválido");
+            return false;
+        }
+        else{
+            if (buscaSexoMPFisica.isSelected()){
+                sexo = "M";
+            }
+            else if (buscaSexoFPFisica.isSelected()){
+                sexo = "F";
+            }
+            return true;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApagarPFisica;
     private javax.swing.JButton btnBuscarCpf;
     private javax.swing.JButton btnCadMotoristaPFisica;
-    private javax.swing.JLabel buscaCpfPFisica;
-    private javax.swing.JLabel buscaEndePFisica;
-    private javax.swing.JLabel buscaNascPFisica;
-    private javax.swing.JLabel buscaNomePFisica;
+    private javax.swing.JButton btnEditPFisica;
+    private javax.swing.JFormattedTextField buscaCpfPFisica;
+    private javax.swing.JTextField buscaEndePFisica;
+    private javax.swing.JFormattedTextField buscaNascPFisica;
+    private javax.swing.JTextField buscaNomePFisica;
+    private javax.swing.JRadioButton buscaSexoFPFisica;
+    private javax.swing.JRadioButton buscaSexoMPFisica;
     private javax.swing.JFormattedTextField buscarCPF;
     private javax.swing.JTextField cnhMoto;
     private javax.swing.JButton excluirMotorista;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

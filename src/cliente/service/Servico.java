@@ -52,12 +52,18 @@ public class Servico {
         }
     }
     
-    public String formatarCpf(String cpf){
+    public String formatarCpfSaida(String cpf){
         String cpf1 = cpf.substring(0,3);
         String cpf2 = cpf.substring(3,6);
         String cpf3 = cpf.substring(6,9);
         String cpf4 = cpf.substring(9,11);
         return cpf1 + "." + cpf2 + "." + cpf3 + "-" + cpf4;
+    }
+    
+    public String formatarCpfEntrada(String cpf){
+        cpf = cpf.replace(".", "");
+        cpf = cpf.replace("-", "");
+        return cpf;
     }
     
     public String formatarDataSaida(String nasc){
@@ -129,6 +135,20 @@ public class Servico {
         return true;
     }
     
+    public boolean alterarClientePFisica(Cliente cliente, PessoaFisica pessoa)  throws SQLException{
+        boolean editarSucesso = dao.editarCliente(cliente);
+        boolean editou = false;
+        if (editarSucesso){
+            if (dao.editarPFisica(cliente.getId(), pessoa)){
+                editou = true;
+            }
+        }
+        else{
+            editou = false;
+        }
+        return editou;
+    }
+    
     public Cliente buscarPessoaFisica(String cpf){
         PessoaFisica pessoa = dao.buscarPessoaFisica(cpf);
         Cliente cliente = new Cliente();
@@ -146,7 +166,9 @@ public class Servico {
     public boolean deletarClientePFisica(Cliente cliente){
         boolean deletou = false;
         if (dao.deletarPessoaFisica(cliente.getId())){
-            deletou = dao.deletarCliente(cliente.getId());
+            if (dao.deletarMotorista(cliente.getId())){
+                deletou = dao.deletarCliente(cliente.getId()); 
+            }
         }        
         return deletou;
     }

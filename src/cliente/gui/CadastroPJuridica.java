@@ -238,7 +238,7 @@ public class CadastroPJuridica extends javax.swing.JFrame {
     
     private void limparCampos(){
         nomeCadPJuridica.setText("");
-        cnpjCadPJuridica.setText("  .   .   /    -  ");
+        cnpjCadPJuridica.setText(null);
         enderecoCadPJuridica.setText("");
     }
     
