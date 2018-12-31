@@ -27,4 +27,14 @@ public class VeiculoService {
         return dao.buscarVeiculo(placa);
     }
     
+    public boolean isVeiculo(String Placa){
+        VeiculoDao dao = new VeiculoDao();
+        return dao.isVeiculoCadastrado(Placa);
+    }
+    
+    public void deletarVeiculo(String placa){
+        VeiculoDao dao = new VeiculoDao();
+        dao.deletarVeiculo(placa);
+    }
+    
 }

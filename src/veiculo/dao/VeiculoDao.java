@@ -72,7 +72,7 @@ public class VeiculoDao {
             }
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Erro ao buscar pessoa: " + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao buscar veículo: " + ex);
         }finally{
             DataBaseConnection.fecharConexao(connection, statement, rs);
         }
@@ -98,7 +98,7 @@ public class VeiculoDao {
             }
             
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "Erro ao buscar cliente: " + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao buscar veículo: " + ex);
             
         } finally{
             DataBaseConnection.fecharConexao(connection, statement, rs);
@@ -107,5 +107,46 @@ public class VeiculoDao {
         return revisoes;
     }
     
+    public boolean isVeiculoCadastrado(String placa){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try{
+            statement = connection.prepareStatement("Select * from veiculo where placa = (?)");
+            statement.setString(1, placa);
+            rs = statement.executeQuery();
+            if(rs.next()){
+                return true;
+            }else{
+                return false;
+            }
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro ao buscar veículo: " + ex);
+        }finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        
+        return true;
+        
+    }
+    
+    public boolean deletarVeiculo(String placa){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try{
+            statement = connection.prepareStatement("DELETE FROM veiculo WHERE placa = ?");
+            statement.setString(1, placa);
+            statement.executeUpdate();
+            return true;
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar pessoa: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }
     
 }
