@@ -40,7 +40,23 @@ public class ServicoFilial {
         return listaFiliais;
     }
     
+    public String[] getNomesFiliais(){
+        String[] nomesFiliais = new String[100];
+        ArrayList<Filial> filiais = buscarListaFiliais();
+        int count = 0;
+        for(Filial filial: filiais){
+            nomesFiliais[count] = filial.getLocalizacao();
+            count++;  
+        }
+        return nomesFiliais;
+    }
+    
     public Filial buscarFilial(String localizacao){
+        Filial filial = dao.buscarFilial(localizacao);
+        return filial;
+    }
+    
+    public Filial buscarFilial1(int localizacao){
         Filial filial = dao.buscarFilial(localizacao);
         return filial;
     }

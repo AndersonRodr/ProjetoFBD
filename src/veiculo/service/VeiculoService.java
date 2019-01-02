@@ -1,6 +1,7 @@
 package veiculo.service;
 
 import veiculo.dao.VeiculoDao;
+import veiculo.dominio.Revisao;
 import veiculo.dominio.Veiculo;
 
 /*
@@ -35,6 +36,23 @@ public class VeiculoService {
     public void deletarVeiculo(String placa){
         VeiculoDao dao = new VeiculoDao();
         dao.deletarVeiculo(placa);
+    }
+    
+    public String getTipoVeiculo(String tipo){
+        VeiculoDao dao = new VeiculoDao();
+        return dao.getTipo(tipo);
+        
+    }
+    public void updateRevisaoVeiculo(String placa, String data){
+        VeiculoDao dao = new VeiculoDao();
+        Revisao revisao = new Revisao();
+        dao.updateRevisao(placa, data);
+        dao.revisao(revisao);
+    }
+    
+    public void updateKm(String placa, String km){
+        VeiculoDao dao = new VeiculoDao();
+        dao.updateKm(placa, km);
     }
     
 }

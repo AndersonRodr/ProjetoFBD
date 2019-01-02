@@ -148,5 +148,91 @@ public class VeiculoDao {
         }
         return false;
     }
+
+    public String getTipo(String tipo) {
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        String tipoSaida = "";
+        try{
+            statement = connection.prepareStatement("Select * from tipo_veiculo where id_tipo_veiculo = (?)");
+            statement.setString(1, tipo);
+            rs = statement.executeQuery();
+            if(rs.next()){
+                tipoSaida = rs.getString("nome"); 
+//                veiculo.setPlaca(rs.getString("placa"));
+//                veiculo.setNumeroChassi(rs.getString("numero_chassi"));
+//                veiculo.setNumeroMotor(rs.getString("numero_motor"));
+//                veiculo.setQuilometragem(rs.getInt("quilometragem"));
+//                veiculo.setUltimaRevisao(rs.getString("ultima_revisao"));
+//                veiculo.setDataMediaKM(rs.getString("dt_media_km"));
+//                veiculo.setTipoVeiculo(rs.getInt("tipo_veiculo"));
+//                veiculo.setFilial(rs.getInt("filial"));
+            }else{
+                return null;
+            }
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro ao buscar veículo: " + ex);
+        }finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        
+        return tipoSaida;
+    }
+
+    public void updateRevisao(String placa,String data) {
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE veiculo set ultima_revisao = ? where placa = ?");
+            statement.setString(1, data);
+            statement.setString(2, placa);
+            statement.executeUpdate();
+   
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível editar " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+    }
     
+    public void revisao(Revisao revisao){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try{
+            statement = connection.prepareStatement("INSERT INTO revisao (id_tipo_veiculo, quilometragem)"
+                                                   +"VALUES(?,?)");
+            statement.setString(1,String.valueOf(revisao.getIdVeiculo()));
+            statement.setString(2, String.valueOf(revisao.getQuilometragem()));
+           
+
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "Não foi possível cadastrar: " + ex);
+            
+        }finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        
+        }
+    
+    }
+    
+    public void updateKm(String placa, String km){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE veiculo set quilometragem = ? where placa = ?");
+            statement.setString(1, km);
+            statement.setString(2, placa);
+            statement.executeUpdate();
+   
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível editar " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        
+    }
 }

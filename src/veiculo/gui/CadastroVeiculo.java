@@ -50,11 +50,11 @@ public class CadastroVeiculo extends javax.swing.JFrame {
         veiculoPlaca = new javax.swing.JTextField();
         veiculoMotor = new javax.swing.JTextField();
         veiculoKm = new javax.swing.JTextField();
-        veiculoFilial = new javax.swing.JTextField();
         veiculoChassi = new javax.swing.JTextField();
         veiculoCor = new javax.swing.JTextField();
         tipoVeiculo = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
+        veiculoFilial = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -119,12 +119,6 @@ public class CadastroVeiculo extends javax.swing.JFrame {
             }
         });
 
-        veiculoFilial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                veiculoFilialActionPerformed(evt);
-            }
-        });
-
         veiculoChassi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 veiculoChassiActionPerformed(evt);
@@ -137,7 +131,7 @@ public class CadastroVeiculo extends javax.swing.JFrame {
             }
         });
 
-        tipoVeiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2"}));
+        tipoVeiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "'T AUTOM CAM PASS'", "'T CAM CARGA'"}));
         tipoVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tipoVeiculoActionPerformed(evt);
@@ -145,6 +139,13 @@ public class CadastroVeiculo extends javax.swing.JFrame {
         });
 
         jLabel9.setText("Tipo:");
+
+        veiculoFilial.setModel(new javax.swing.DefaultComboBoxModel<>(serviceFilial.getNomesFiliais()));
+        veiculoFilial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                veiculoFilialActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,7 +157,7 @@ public class CadastroVeiculo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(54, 54, 54)
                         .addComponent(jLabel6)
-                        .addGap(0, 128, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -164,17 +165,18 @@ public class CadastroVeiculo extends javax.swing.JFrame {
                                 .addComponent(btnCadVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(veiculoPlaca)
                                     .addComponent(veiculoMotor)
                                     .addComponent(veiculoKm)
-                                    .addComponent(veiculoFilial)
                                     .addComponent(veiculoChassi)
+                                    .addComponent(veiculoFilial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel4))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(veiculoCor, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,8 +184,8 @@ public class CadastroVeiculo extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel9)
-                                            .addComponent(tipoVeiculo, 0, 100, Short.MAX_VALUE))))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                            .addComponent(tipoVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(83, 83, 83))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,9 +211,9 @@ public class CadastroVeiculo extends javax.swing.JFrame {
                 .addComponent(veiculoKm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
                 .addComponent(jLabel5)
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(veiculoFilial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel9))
@@ -229,8 +231,8 @@ public class CadastroVeiculo extends javax.swing.JFrame {
 
     private void btnCadVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadVeiculoActionPerformed
         if(validarCampos()){
-            if (serviceFilial.verificarFilial(veiculoFilial.getText())){
-                Filial filial = serviceFilial.buscarFilial(veiculoFilial.getText());
+            if (serviceFilial.verificarFilial((String) veiculoFilial.getSelectedItem())){
+                Filial filial = serviceFilial.buscarFilial((String) veiculoFilial.getSelectedItem());
                 Veiculo veiculo = new Veiculo();
                 VeiculoService vService = new VeiculoService();
                 veiculo.setPlaca(veiculoPlaca.getText());
@@ -240,7 +242,14 @@ public class CadastroVeiculo extends javax.swing.JFrame {
     //            int filial = parseInt(veiculoFilial.getText());
                 veiculo.setQuilometragem(Km);
                 veiculo.setFilial(filial.getId());
-                veiculo.setTipoVeiculo(tipoVeiculo.getItemCount());
+                String tipoV = (String) tipoVeiculo.getSelectedItem();
+                int tipo;
+                if(tipoV.contains("CARGA")){
+                    tipo = 2;   
+                }else{
+                    tipo = 1;
+                }
+                veiculo.setTipoVeiculo(tipo);
                 veiculo.setCor(veiculoCor.getText());
                 if(!vService.isVeiculo(veiculoPlaca.getText())){
                     vService.cadastrarVeiculo(veiculo);
@@ -249,7 +258,7 @@ public class CadastroVeiculo extends javax.swing.JFrame {
                     veiculoChassi.setText("");
                     veiculoMotor.setText("");
                     veiculoKm.setText("");
-                    veiculoFilial.setText("");
+//                    veiculoFilial.setText("");
                     veiculoCor.setText("");
                 }else{
                     JOptionPane.showMessageDialog(null, "Veículo já cadastrado");
@@ -284,10 +293,6 @@ public class CadastroVeiculo extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_veiculoKmActionPerformed
 
-    private void veiculoFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veiculoFilialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_veiculoFilialActionPerformed
-
     private void veiculoChassiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veiculoChassiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_veiculoChassiActionPerformed
@@ -299,6 +304,10 @@ public class CadastroVeiculo extends javax.swing.JFrame {
     private void tipoVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoVeiculoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tipoVeiculoActionPerformed
+
+    private void veiculoFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_veiculoFilialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_veiculoFilialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -360,13 +369,9 @@ public class CadastroVeiculo extends javax.swing.JFrame {
                  return false;
             }  
         }
-        else if(service.isEmpty(String.valueOf(veiculoFilial.getText()))){
-            JOptionPane.showMessageDialog(null, "Filial inválida");
-            return false;
-        }
-        else if(!service.isEmpty(String.valueOf(veiculoFilial.getText()))){
+        else if(!service.isEmpty(String.valueOf(veiculoKm.getText()))){
             try{
-                int x = parseInt(veiculoFilial.getText());
+                int x = parseInt(veiculoKm.getText());
             }catch(NumberFormatException ex){
                  JOptionPane.showMessageDialog(null, "Formato de Quilometragem inválida");
                  return false;
@@ -390,7 +395,7 @@ public class CadastroVeiculo extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> tipoVeiculo;
     private javax.swing.JTextField veiculoChassi;
     private javax.swing.JTextField veiculoCor;
-    private javax.swing.JTextField veiculoFilial;
+    private javax.swing.JComboBox<String> veiculoFilial;
     private javax.swing.JTextField veiculoKm;
     private javax.swing.JTextField veiculoMotor;
     private javax.swing.JTextField veiculoPlaca;

@@ -109,4 +109,31 @@ public class FilialDAO {
         }
         return filial;
     }
+
+    public Filial buscarFilial(int localizacao) {
+        Filial filial = new Filial();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("Select * from filial where id_filial = '" + localizacao + "'");
+            rs = statement.executeQuery(); 
+            if (rs.next()){
+                filial.setId(rs.getInt("id_filial"));
+                filial.setLocalizacao(rs.getString("localizacao"));
+            }
+            else{
+                return null;
+            }
+
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar filial: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return filial;
+        
+    }
 }
