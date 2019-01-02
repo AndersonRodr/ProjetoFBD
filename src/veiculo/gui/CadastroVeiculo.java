@@ -6,6 +6,8 @@
 package veiculo.gui;
 
 import cliente.service.Servico;
+import filial.dominio.Filial;
+import filial.service.ServicoFilial;
 import static java.lang.Integer.parseInt;
 import javax.swing.JOptionPane;
 import veiculo.dominio.Veiculo;
@@ -17,6 +19,7 @@ import veiculo.service.VeiculoService;
  */
 public class CadastroVeiculo extends javax.swing.JFrame {
     private Servico service = new Servico();
+    private ServicoFilial serviceFilial = new ServicoFilial();
     /**
      * Creates new form CadastroVeiculo
      */
@@ -86,7 +89,7 @@ public class CadastroVeiculo extends javax.swing.JFrame {
 
         jLabel4.setText("Quilometragem");
 
-        jLabel5.setText("Filial");
+        jLabel5.setText("Nome Filial:");
 
         btnCadVeiculo.setBackground(new java.awt.Color(153, 153, 255));
         btnCadVeiculo.setText("CADASTRAR");
@@ -226,28 +229,34 @@ public class CadastroVeiculo extends javax.swing.JFrame {
 
     private void btnCadVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadVeiculoActionPerformed
         if(validarCampos()){
-            Veiculo veiculo = new Veiculo();
-            VeiculoService vService = new VeiculoService();
-            veiculo.setPlaca(veiculoPlaca.getText());
-            veiculo.setNumeroChassi(veiculoChassi.getText());
-            veiculo.setNumeroMotor(veiculoMotor.getText());
-            int Km = parseInt(veiculoKm.getText());
-            int filial = parseInt(veiculoFilial.getText());
-            veiculo.setQuilometragem(Km);
-            veiculo.setFilial(filial);
-            veiculo.setTipoVeiculo(tipoVeiculo.getItemCount());
-            veiculo.setCor(veiculoCor.getText());
-            if(!vService.isVeiculo(veiculoPlaca.getText())){
-                vService.cadastrarVeiculo(veiculo);
-                JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
-                veiculoPlaca.setText("");
-                veiculoChassi.setText("");
-                veiculoMotor.setText("");
-                veiculoKm.setText("");
-                veiculoFilial.setText("");
-                veiculoCor.setText("");
-            }else{
-                JOptionPane.showMessageDialog(null, "Veículo já cadastrado");
+            if (serviceFilial.verificarFilial(veiculoFilial.getText())){
+                Filial filial = serviceFilial.buscarFilial(veiculoFilial.getText());
+                Veiculo veiculo = new Veiculo();
+                VeiculoService vService = new VeiculoService();
+                veiculo.setPlaca(veiculoPlaca.getText());
+                veiculo.setNumeroChassi(veiculoChassi.getText());
+                veiculo.setNumeroMotor(veiculoMotor.getText());
+                int Km = parseInt(veiculoKm.getText());
+    //            int filial = parseInt(veiculoFilial.getText());
+                veiculo.setQuilometragem(Km);
+                veiculo.setFilial(filial.getId());
+                veiculo.setTipoVeiculo(tipoVeiculo.getItemCount());
+                veiculo.setCor(veiculoCor.getText());
+                if(!vService.isVeiculo(veiculoPlaca.getText())){
+                    vService.cadastrarVeiculo(veiculo);
+                    JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso");
+                    veiculoPlaca.setText("");
+                    veiculoChassi.setText("");
+                    veiculoMotor.setText("");
+                    veiculoKm.setText("");
+                    veiculoFilial.setText("");
+                    veiculoCor.setText("");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Veículo já cadastrado");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Esta Filial não existe");
             }
 //            try{
 //              if(vService.buscarVeiculo(veiculoPlaca.getText()).equals(veiculo)){
