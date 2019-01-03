@@ -9,6 +9,7 @@ import cliente.dominio.Motorista;
 import filial.service.ServicoFilial;
 import filial.dominio.Filial;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -26,6 +27,7 @@ public class CadastrarFilial extends javax.swing.JFrame {
      */
     public CadastrarFilial() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
         DefaultTableModel tabelinha = (DefaultTableModel) tabelaFiliais.getModel();
         tabelaFiliais.setRowSorter(new TableRowSorter(tabelinha));
         preencherTabela();

@@ -7,6 +7,7 @@ package reserva.gui;
 
 import cliente.service.Servico;
 import filial.service.ServicoFilial;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import reserva.service.ReservaService;
 
@@ -23,6 +24,7 @@ public class ReservaJF extends javax.swing.JFrame {
      */
     public ReservaJF() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
     }
     
     private String formatarData(String nasc){
@@ -137,7 +139,6 @@ public class ReservaJF extends javax.swing.JFrame {
             }
         });
 
-        campoDado.setText("   .   .   -  ");
         campoDado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoDadoActionPerformed(evt);

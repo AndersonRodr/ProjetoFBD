@@ -6,6 +6,7 @@
 package cliente.gui;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -14,14 +15,16 @@ import javax.swing.text.MaskFormatter;
  * @author Anderson
  */
 public class ClienteJF extends javax.swing.JFrame {
-    private boolean framePFisicaOpen = false;
-    private boolean frameCadPJuridicaOpen = false;
+//    private boolean framePFisicaOpen = false;
+//    private boolean frameCadPJuridicaOpen = false;
 
     /**
      * Creates new form RegistroPessoaFisica
      */
     public ClienteJF() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -112,18 +115,18 @@ public class ClienteJF extends javax.swing.JFrame {
     private void btnPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPFisicaActionPerformed
         // TODO add your handling code here:
         PessoaFisicaJF telaPFisicaJF = new  PessoaFisicaJF();
-        if (!framePFisicaOpen){
+//        if (!framePFisicaOpen){
             telaPFisicaJF.setVisible(true);
-            framePFisicaOpen = true;
-        }
+//            framePFisicaOpen = true;
+//        }
     }//GEN-LAST:event_btnPFisicaActionPerformed
 
     private void btnPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPJuridicaActionPerformed
         CadastroPJuridica telaCadPJuridica = new  CadastroPJuridica();
-        if (!frameCadPJuridicaOpen){
+//        if (!frameCadPJuridicaOpen){
             telaCadPJuridica.setVisible(true);
-            frameCadPJuridicaOpen = true;
-        }
+//            frameCadPJuridicaOpen = true;
+//        }
     }//GEN-LAST:event_btnPJuridicaActionPerformed
 
     /**

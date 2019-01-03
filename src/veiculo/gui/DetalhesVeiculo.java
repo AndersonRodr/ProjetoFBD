@@ -10,6 +10,7 @@ import filial.dominio.Filial;
 import filial.service.ServicoFilial;
 import static java.lang.Integer.parseInt;
 import java.time.LocalDate;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import veiculo.dominio.Veiculo;
 import veiculo.service.VeiculoService;
@@ -26,6 +27,7 @@ public class DetalhesVeiculo extends javax.swing.JFrame {
      */
     public DetalhesVeiculo() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
     }
 
     /**

@@ -9,6 +9,7 @@ import cliente.dominio.PessoaJuridica;
 import cliente.service.Servico;
 import cliente.service.ServicoClienteCNPJ;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class CadastroPJuridica extends javax.swing.JFrame {
@@ -19,6 +20,8 @@ public class CadastroPJuridica extends javax.swing.JFrame {
      */
     public CadastroPJuridica() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
     }
 
     /**

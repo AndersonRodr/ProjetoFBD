@@ -9,6 +9,7 @@ import cliente.service.Servico;
 import filial.dominio.Filial;
 import filial.service.ServicoFilial;
 import static java.lang.Integer.parseInt;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import veiculo.dominio.Veiculo;
 import veiculo.service.VeiculoService;
@@ -23,9 +24,9 @@ public class CadastroVeiculo extends javax.swing.JFrame {
     /**
      * Creates new form CadastroVeiculo
      */
-    public CadastroVeiculo() {
-        
+    public CadastroVeiculo() {        
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**

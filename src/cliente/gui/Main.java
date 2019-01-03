@@ -1,11 +1,19 @@
 package cliente.gui;
 
+import filial.gui.CadastrarFilial;
+import javax.swing.JFrame;
+import javax.swing.SwingConstants;
 import reserva.gui.ReservaJF;
+import veiculo.gui.VeiculoJF;
 
 public class Main extends javax.swing.JFrame {
-    private boolean frameLoginOpen = false;
+//    private boolean frameLoginOpen = false;
+//    private boolean frameReservaOpen = false;
+//    private boolean frameVeiculoOpen = false;
+//    private boolean frameFilialOpen = false;
     public Main() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -23,7 +31,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnReserva = new javax.swing.JButton();
         btnFilial = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnVeiculo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 102));
@@ -68,8 +76,18 @@ public class Main extends javax.swing.JFrame {
         });
 
         btnFilial.setText("Filial");
+        btnFilial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilialActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Veículo");
+        btnVeiculo.setText("Veículo");
+        btnVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVeiculoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -84,7 +102,7 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnFilial, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(77, 77, 77))
         );
         jPanel1Layout.setVerticalGroup(
@@ -98,7 +116,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(180, 180, 180))
         );
 
@@ -122,19 +140,35 @@ public class Main extends javax.swing.JFrame {
 
     private void btnPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPFisicaActionPerformed
         ClienteJF telaCliente = new  ClienteJF();
-        if (!frameLoginOpen){
+//        if (!frameLoginOpen){
             telaCliente.setVisible(true);  
-            frameLoginOpen = true;
-        }
+//            frameLoginOpen = true;
+//        }
     }//GEN-LAST:event_btnPFisicaActionPerformed
 
     private void btnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaActionPerformed
         ReservaJF telaReserva = new  ReservaJF();
-        if (!frameLoginOpen){
+//        if (!frameReservaOpen){
             telaReserva.setVisible(true);  
-            frameLoginOpen = true;
-        }    
+//            frameReservaOpen = true;
+//        }    
     }//GEN-LAST:event_btnReservaActionPerformed
+
+    private void btnVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVeiculoActionPerformed
+        VeiculoJF telaVeiculo = new  VeiculoJF();
+//        if (!frameVeiculoOpen){
+            telaVeiculo.setVisible(true);  
+//            frameVeiculoOpen = true;
+//        } 
+    }//GEN-LAST:event_btnVeiculoActionPerformed
+
+    private void btnFilialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilialActionPerformed
+        CadastrarFilial filial = new  CadastrarFilial();
+//        if (!frameFilialOpen){
+            filial.setVisible(true);  
+//            frameFilialOpen = true;
+//        } 
+    }//GEN-LAST:event_btnFilialActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -172,7 +206,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnFilial;
     private javax.swing.JButton btnPFisica;
     private javax.swing.JButton btnReserva;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnVeiculo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

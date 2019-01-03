@@ -14,6 +14,7 @@ import cliente.service.ServicoClienteCPF;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -23,7 +24,7 @@ import javax.swing.table.TableRowSorter;
  * @author Anderson
  */
 public class PessoaFisicaJF extends javax.swing.JFrame {
-    private boolean frameCadPFisicaOpen = false;
+//    private boolean frameCadPFisicaOpen = false;
     private String cpf;
     private Servico service = new Servico();
     private Cliente cliente = new Cliente();
@@ -35,6 +36,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     
     public PessoaFisicaJF() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
         tabelaMotoristasPFisica.setRowSorter(new TableRowSorter(tabelinha));
     }
@@ -86,6 +88,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -492,10 +495,10 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CadastroPFisica telaCadPFisica = new  CadastroPFisica();
-        if (!frameCadPFisicaOpen){
+//        if (!frameCadPFisicaOpen){
             telaCadPFisica.setVisible(true);  
-            frameCadPFisicaOpen = true;
-        }
+//            frameCadPFisicaOpen = true;
+//        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnApagarPFisicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarPFisicaActionPerformed
