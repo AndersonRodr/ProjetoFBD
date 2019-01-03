@@ -4,6 +4,7 @@ import cliente.dominio.Cliente;
 import cliente.dominio.Motorista;
 import cliente.dominio.PessoaFisica;
 import cliente.dominio.PessoaJuridica;
+import cliente.dominio.Reserva;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -344,4 +345,30 @@ public class ClientePessoaDAO {
         }
         return false;
     }
+
+    public void doReserva(Reserva reserva) {
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("INSERT INTO reserva (data_retirada, data_devolucao, id_filial_origem, id_filial_devolucao, id_tipo_veiculo, id_cliente)"
+                    + "VALUES(?,?,?,?,?,?)");
+            statement.setString(1, reserva.getDataRetirada());
+            statement.setString(2, reserva.getDataDevolucao());
+            statement.setInt(3, reserva.getFilialRetirada());
+            statement.setInt(4, reserva.getFilialDevolucao());
+            statement.setInt(5, reserva.getTipoCarro());
+            statement.setInt(6, reserva.getIdCliente());
+            statement.executeUpdate();
+            
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível cadastrar motorista: " + ex);
+            
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        
+        
+    } 
 }

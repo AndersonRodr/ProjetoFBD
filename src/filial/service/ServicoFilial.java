@@ -60,4 +60,8 @@ public class ServicoFilial {
         Filial filial = dao.buscarFilial(localizacao);
         return filial;
     }
+
+    public void buscarFilial() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

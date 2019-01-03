@@ -5,6 +5,9 @@
  */
 package reserva.gui;
 
+import cliente.dominio.Cliente;
+import cliente.dominio.PessoaFisica;
+import cliente.dominio.Reserva;
 import cliente.service.Servico;
 import filial.service.ServicoFilial;
 import javax.swing.JFrame;
@@ -17,7 +20,7 @@ import reserva.service.ReservaService;
  */
 public class ReservaJF extends javax.swing.JFrame {
     ServicoFilial filialService = new ServicoFilial();
-    private int tipocliente;//1-PESSOA FISICA 2-PESSOA JURIDICA
+    private int tipocliente = 1;//1-PESSOA FISICA 2-PESSOA JURIDICA
 
     /**
      * Creates new form ReservaJF
@@ -253,6 +256,28 @@ public class ReservaJF extends javax.swing.JFrame {
 
     private void btnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaActionPerformed
         if(validarCampos()){
+            Cliente pf = new Cliente();
+            Servico service = new Servico();
+            Reserva reserva = new Reserva();
+            if(tipocliente==1){               
+                
+   
+            }else{
+//                pf = service.buscarPessoaJuridica(); TODO
+            }
+            pf = service.buscarPessoaFisica(campoDado.getText());
+            reserva.setIdCliente(pf.getPFisica().getId());
+            reserva.setDataDevolucao(service.formatarDataEntrada(dataDevolReserva.getText()));
+            reserva.setDataRetirada(service.formatarDataEntrada(dataRetiradaReserva.getText()));
+            reserva.setFilialRetirada(filialService.buscarFilial((String) filialRetirada.getSelectedItem()).getId());
+            reserva.setFilialDevolucao(filialService.buscarFilial((String) filialDevolucao.getSelectedItem()).getId());
+            reserva.setTipoCarro(Integer.parseInt((String)tipoReserva.getSelectedItem()));
+            ReservaService rService = new ReservaService();
+            rService.doReserva(reserva);
+            JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
+            limparCampos();
+            
+            
             
         }
     }//GEN-LAST:event_btnReservaActionPerformed
@@ -263,10 +288,8 @@ public class ReservaJF extends javax.swing.JFrame {
 
     private void tipoClienteBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoClienteBoxActionPerformed
         if(tipoClienteBox.getSelectedIndex()==1){
-            campoDado.setText("  .   .   /    -  ");
             tipocliente = 2;
-        }else{
-            campoDado.setText("   .   .   -  ");
+        }else{ 
             tipocliente = 1;
             
         }
@@ -342,17 +365,24 @@ public class ReservaJF extends javax.swing.JFrame {
             return false;
         }
         if(tipocliente ==1){          
-           if(!servico.buscarCPF(servico.formatarCpfEntrada(campoDado.getText()))){
+           if(!servico.buscarCPF((campoDado.getText()))){
+               
                JOptionPane.showMessageDialog(null, "Cliente não encontrado");
                return false;
            }
         }else{
-           if(!servico.buscarCNPJ(servico.formatarCpfEntrada(campoDado.getText()))){
+           if(!servico.buscarCPF((campoDado.getText()))){
               JOptionPane.showMessageDialog(null, "Cliente não encontrado");
               return false; 
            } 
         }
         return true;
+    }
+
+    private void limparCampos() {
+        dataDevolReserva.setText("");
+        dataRetiradaReserva.setText("");
+        campoDado.setText("");
     }
         
 }

@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 
 public class DataBaseConnection {
     private static final String DRIVER = "com.mysql.jdbc.Driver";
-//    private static final String URL = "jdbc:mysql://localhost:3306/locadora?useTimezone=true&serverTimezone=UTC";
-    private static final String URL = "jdbc:mysql://localhost:3306/locadora";
+    private static final String URL = "jdbc:mysql://localhost:3306/locadora?useTimezone=true&serverTimezone=UTC";
+//    private static final String URL = "jdbc:mysql://localhost:3306/locadora";
     private static final String USER = "root";
-    private static final String PASS = "";
-//    private static final String PASS = "pass123";
+//    private static final String PASS = "";
+    private static final String PASS = "pass123";;
     
     
     public static Connection getConexao(){

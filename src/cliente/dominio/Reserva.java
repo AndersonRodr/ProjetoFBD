@@ -73,6 +73,8 @@ public class Reserva {
     public void setFilialDevolucao(int filialDevolucao) {
         this.filialDevolucao = filialDevolucao;
     }
+
+    
     
     
 }
