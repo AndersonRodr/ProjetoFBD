@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import locacao.dominio.Locacao;
 
 public class ClientePessoaDAO {
     
@@ -370,5 +371,27 @@ public class ClientePessoaDAO {
         }
         
         
+    } 
+     public void doLocacao(Locacao locacao) {
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("INSERT INTO locacao (data_retirada, data_devolucao, cnh_motorista, placa_veiculo, id_cliente)"
+                    + "VALUES(?,?,?,?,?)");
+            statement.setString(1, locacao.getDataRetirada());
+            statement.setString(2, locacao.getDataDevolucao());
+            statement.setInt(3, locacao.getCnhMotorista());
+            statement.setString(4, locacao.getPlacaVeiculo());
+            statement.setInt(5, locacao.getIdCliente());
+            statement.executeUpdate();
+            
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível alocar o veículo " + ex);
+            
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }  
     } 
 }

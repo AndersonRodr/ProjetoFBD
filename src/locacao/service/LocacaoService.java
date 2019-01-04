@@ -5,10 +5,24 @@
  */
 package locacao.service;
 
+import cliente.dao.ClientePessoaDAO;
+import cliente.dominio.Reserva;
+import locacao.dominio.Locacao;
+
 /**
  *
  * @author Kimbelly
  */
 public class LocacaoService {
     
+    public void validarDatas(String retirada, String devolucao){
+        
+    }
+     public void doLocacao(Locacao locacao){
+        ClientePessoaDAO dao = new ClientePessoaDAO();
+        dao.doLocacao(locacao);
+        
+    }
+    
 }
+

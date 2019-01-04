@@ -10,20 +10,19 @@ package locacao.dominio;
  * @author Kimbelly
  */
 public class Locacao {
-    private int idlocacao;
+    private int idLocacao;
     private int idCliente;
-    private int tipoCarro;
     private String dataRetirada;
     private String dataDevolucao;
     private int cnhMotorista;
     private String placaVeiculo;
 
-    public int getIdlocacao() {
-        return idlocacao;
+    public int getIdLocacao() {
+        return idLocacao;
     }
 
-    public void setIdlocacao(int idlocacao) {
-        this.idlocacao = idlocacao;
+    public void setIdLocacao(int idLocacao) {
+        this.idLocacao = idLocacao;
     }
 
     public int getIdCliente() {
@@ -32,14 +31,6 @@ public class Locacao {
 
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
-    }
-
-    public int getTipoCarro() {
-        return tipoCarro;
-    }
-
-    public void setTipoCarro(int tipoCarro) {
-        this.tipoCarro = tipoCarro;
     }
 
     public String getDataRetirada() {

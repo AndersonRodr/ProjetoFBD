@@ -97,7 +97,7 @@ public class LocacaoJF extends javax.swing.JFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel1.setText("ALOCAÇÃO DO VEÍCULO");
+        jLabel1.setText("LOCAÇÃO DO VEÍCULO");
 
         jLabel2.setText("Data de retirada:");
 
@@ -311,6 +311,11 @@ public class LocacaoJF extends javax.swing.JFrame {
 
     private boolean validarCampos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    private void limparCampos() {
+        dataDevolReserva.setText("");
+        dataRetiradaReserva.setText("");
+        campoDado.setText("");
     }
 
 }
