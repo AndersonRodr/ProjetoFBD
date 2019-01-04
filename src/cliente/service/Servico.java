@@ -65,6 +65,13 @@ public class Servico {
         cpf = cpf.replace("-", "");
         return cpf;
     }
+
+    public String formatarCnpjEntrada(String cnpj){
+        cnpj = cnpj.replace(".", "");
+        cnpj = cnpj.replace("/", "");
+        cnpj = cnpj.replace("-", "");
+        return cnpj;        
+    }
     
     public String formatarDataSaida(String nasc){
         String ano = nasc.substring(0, 4);
@@ -148,6 +155,22 @@ public class Servico {
         }
         return editou;
     }
+
+    public boolean alterarClientePJuridica(Cliente cliente, PessoaJuridica pessoa)  throws SQLException{
+        boolean editarSucesso = dao.editarCliente(cliente);
+        boolean editou = false;
+        if (editarSucesso){
+            if (dao.editarPJuridica(cliente.getId(), pessoa)){
+                editou = true;
+            }
+        }
+        else{
+            editou = false;
+        }
+        return editou;
+    }    
+    
+    
     
     public Cliente buscarPessoaFisica(String cpf){
         PessoaFisica pessoa = dao.buscarPessoaFisica(cpf);
@@ -163,6 +186,20 @@ public class Servico {
         return cliente;
     }
     
+    public Cliente buscarPessoaJuridica(String cnpj){
+        PessoaJuridica pessoa = dao.buscarPessoaJuridica(cnpj);
+        Cliente cliente = new Cliente();
+        if(pessoa == null){
+            JOptionPane.showMessageDialog(null, "Cliente não encontrado");
+            return null;
+        }
+        else{
+            cliente = dao.buscarCliente(pessoa.getIdCliente());
+            cliente.setPJuridica(pessoa);
+        }
+        return cliente;        
+    }
+    
     public boolean deletarClientePFisica(Cliente cliente){
         boolean deletou = false;
         if (dao.deletarPessoaFisica(cliente.getId())){
@@ -172,6 +209,16 @@ public class Servico {
         }        
         return deletou;
     }
+    
+    public boolean deletarClientePJuridica(Cliente cliente){
+        boolean deletou = false;
+        if (dao.deletarPessoaJuridica(cliente.getId())){
+            if (dao.deletarMotorista(cliente.getId())){
+                deletou = dao.deletarCliente(cliente.getId()); 
+            }
+        }        
+        return deletou;
+    }    
     
     public boolean inserirMotorista(Motorista motorista){
         if (!verificarMotorista(motorista)){

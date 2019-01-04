@@ -163,6 +163,32 @@ public class ClientePessoaDAO {
         }
         return pessoa;
     }
+
+    public PessoaJuridica buscarPessoaJuridica(String cnpj){
+        PessoaJuridica pessoa = new PessoaJuridica();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("Select * from pessoa_juridica where cnpj = '" + cnpj + "'");
+            rs = statement.executeQuery(); 
+            if (rs.next()){
+                pessoa.setIdCliente(rs.getInt("Id_Cliente"));
+                pessoa.setCnpj(rs.getString("cnpj"));
+                pessoa.setInscEstadual(rs.getString("Inscricao_estadual"));
+            }
+            else{
+                return null;
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar pessoa: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return pessoa;
+    }    
+    
     
     public Cliente buscarCliente(int id){
         Cliente cliente = new Cliente();
@@ -191,6 +217,23 @@ public class ClientePessoaDAO {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement("Delete from pessoa_fisica where Id_Cliente = ?");
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar pessoa: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }
+
+    public boolean deletarPessoaJuridica(int id){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("Delete from pessoa_juridica where Id_cliente = ?");
             statement.setInt(1, id);
             statement.executeUpdate();
             return true;
@@ -329,6 +372,26 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }
     } 
+
+    public boolean editarPJuridica(int idCliente, PessoaJuridica pessoa){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE pessoa_juridica set Inscricao_estadual = ?, cnpj = ? where Id_Cliente = ?");
+            statement.setString(1, pessoa.getInscEstadual());
+            statement.setString(2, pessoa.getCnpj());
+            statement.setInt(3, idCliente);
+            statement.executeUpdate();
+            return true;
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível editar pessoa física: " + ex);
+            return false;
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+    }
     
     public boolean deletarMotorista(int id){
         Connection connection = DataBaseConnection.getConexao();

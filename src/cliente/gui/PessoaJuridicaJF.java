@@ -5,13 +5,33 @@
  */
 package cliente.gui;
 
+import cliente.dominio.Cliente;
+import cliente.dominio.Motorista;
+import cliente.dominio.PessoaJuridica;
+import cliente.service.Servico;
+import cliente.service.ServicoClienteCNPJ;
+import static java.lang.Integer.parseInt;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author Anderson
  */
 public class PessoaJuridicaJF extends javax.swing.JFrame {
+    private String cnpj;
+    private Cliente cliente = new Cliente();
+    private Servico service = new Servico();
+    private boolean buscou;
+    private ArrayList<Motorista> listaMotoristas = new ArrayList<Motorista>();
+    private PessoaJuridica pessoa = new PessoaJuridica();
+    private Motorista motorista = new Motorista();
+
+
 
     /**
      * Creates new form PessoaJuridicaJF
@@ -19,6 +39,8 @@ public class PessoaJuridicaJF extends javax.swing.JFrame {
     public PessoaJuridicaJF() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPJuridica.getModel();
+        tabelaMotoristasPJuridica.setRowSorter(new TableRowSorter(tabelinha));        
 
     }
 
@@ -32,25 +54,349 @@ public class PessoaJuridicaJF extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        buscarCnpj = new javax.swing.JFormattedTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        buscarNomePJuridica = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        buscarCnpjPJuridica = new javax.swing.JFormattedTextField();
+        jLabel3 = new javax.swing.JLabel();
+        buscaInscEstadPJuridica = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        buscarEnderPJuridica = new javax.swing.JTextField();
+        btnEditPJuridica = new javax.swing.JButton();
+        btnExcluirPJuridica = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaMotoristasPJuridica = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        nomeMotoPJuridica = new javax.swing.JTextField();
+        rgMotoPJuridica = new javax.swing.JTextField();
+        cnhMotoPJuridica = new javax.swing.JTextField();
+        vencMotoPJuridica = new javax.swing.JFormattedTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Buscar CNPJ");
+
+        try {
+            buscarCnpj.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###/####-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        buscarCnpj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarCnpjActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Cadastrar Cliente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buscarCnpj))))
+                .addContainerGap(95, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buscarCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(27, 27, 27)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(204, 204, 255));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setText("Nome:");
+
+        buscarNomePJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarNomePJuridicaActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setText("CNPJ:");
+
+        try {
+            buscarCnpjPJuridica.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###/####-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("Inscrição Estadual:");
+
+        buscaInscEstadPJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscaInscEstadPJuridicaActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Endereço:");
+
+        buscarEnderPJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarEnderPJuridicaActionPerformed(evt);
+            }
+        });
+
+        btnEditPJuridica.setText("Editar Cliente");
+        btnEditPJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditPJuridicaActionPerformed(evt);
+            }
+        });
+
+        btnExcluirPJuridica.setBackground(new java.awt.Color(255, 51, 51));
+        btnExcluirPJuridica.setForeground(new java.awt.Color(255, 255, 255));
+        btnExcluirPJuridica.setText("Excluir Cliente");
+        btnExcluirPJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirPJuridicaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buscarNomePJuridica)
+                            .addComponent(buscarEnderPJuridica)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(buscarCnpjPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buscaInscEstadPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(23, 23, 23))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnEditPJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnExcluirPJuridica, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buscarNomePJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buscarCnpjPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buscaInscEstadPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buscarEnderPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditPJuridica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnExcluirPJuridica)
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Motoristas");
+
+        tabelaMotoristasPJuridica.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nome", "CNH", "Vencimento", "RG"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabelaMotoristasPJuridica);
+
+        jButton3.setText("Excluir Motorista");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Nome:");
+
+        jLabel8.setText("RG:");
+
+        jLabel9.setText("CNH:");
+
+        jLabel10.setText("Vencimento:");
+
+        nomeMotoPJuridica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nomeMotoPJuridicaActionPerformed(evt);
+            }
+        });
+
+        try {
+            vencMotoPJuridica.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jButton4.setText("Cadastrar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 537, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(nomeMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(197, 197, 197)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(rgMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jLabel8))
+                                .addGap(42, 42, 42)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(cnhMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(vencMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(223, 223, 223))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nomeMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rgMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cnhMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(vencMotoPJuridica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -62,6 +408,212 @@ public class PessoaJuridicaJF extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscaInscEstadPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaInscEstadPJuridicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscaInscEstadPJuridicaActionPerformed
+
+    private void buscarEnderPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarEnderPJuridicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscarEnderPJuridicaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (validarCnpj()){
+            cnpj = buscarCnpj.getText();
+            cnpj = cnpj.replace(".", "");
+            cnpj = cnpj.replace("-", "");
+            cliente = service.buscarPessoaJuridica(cnpj);
+
+            if (cliente != null){
+                buscarNomePJuridica.setText(cliente.getNome());
+                buscarCnpjPJuridica.setText(formatarCnpjEntrada(cliente.getpJuridica().getCnpj()));
+                buscarEnderPJuridica.setText(cliente.getEndereco());
+                buscaInscEstadPJuridica.setText(cliente.getpJuridica().getInscEstadual());
+                buscou = true;
+                preencherTabela();
+            }
+            else{
+                limparCamposPessoa();
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private boolean validarCnpj(){       
+        String strCnpj = buscarCnpj.getText();
+        ServicoClienteCNPJ cnpj = new ServicoClienteCNPJ(strCnpj);        
+        if (!cnpj.isCNPJ()){
+            JOptionPane.showMessageDialog(null, "CNPJ inválido");
+            return false;
+        }
+        return true;
+    }
+    
+    private String formatarCnpjEntrada(String cnpj){
+        return service.formatarCnpjEntrada(cnpj);
+    }    
+
+    private void preencherTabela(){ 
+        DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPJuridica.getModel(); 
+        tabelinha.setNumRows(0); 
+        if (cliente != null){ 
+            listaMotoristas = service.getListaMotoristas(cliente.getId());  
+            if (listaMotoristas.size() > 0 ){   
+                for (Motorista m: listaMotoristas){ 
+                    tabelinha.addRow(new Object[] { 
+                       m.getNome(), 
+                       m.getCnh(), 
+                       formatarDataSaida(m.getDataVencimento()), 
+                       m.getRg() 
+                    }); 
+                } 
+            } 
+        } 
+    }
+    
+    private void limparCamposPessoa(){
+        buscarNomePJuridica.setText("");
+        buscarCnpjPJuridica.setText(null);
+        buscaInscEstadPJuridica.setText("");
+        buscarEnderPJuridica.setText("");
+    }
+
+    private String formatarDataSaida(String nasc){
+        return service.formatarDataSaida(nasc);
+    }    
+    
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void nomeMotoPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeMotoPJuridicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nomeMotoPJuridicaActionPerformed
+
+    private void buscarCnpjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCnpjActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscarCnpjActionPerformed
+
+    private void buscarNomePJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarNomePJuridicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscarNomePJuridicaActionPerformed
+
+    private void btnEditPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPJuridicaActionPerformed
+        if (buscou){                   
+            if (validarCampos()){
+                cliente.setNome(buscarNomePJuridica.getText());
+                cliente.setEndereco(buscarEnderPJuridica.getText());           
+
+    //            PessoaFisica pessoa = new PessoaFisica();
+                pessoa.setCnpj(formatarCnpjEntrada(buscarCnpjPJuridica.getText()));
+                pessoa.setInscEstadual(buscaInscEstadPJuridica.getText());
+                try {
+                    if (service.alterarClientePJuridica(cliente, pessoa)){
+                        JOptionPane.showMessageDialog(null, "Cliente Editado!");
+                        buscou = false;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Erro ao realizar alteração.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro inesperado" + ex);
+                }
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Busque um cliente");
+        }
+    }//GEN-LAST:event_btnEditPJuridicaActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if (!service.isEmpty(buscarNomePJuridica.getText())){
+            if (verificarCampos()){ 
+                motorista.setCnh(parseInt(cnhMotoPJuridica.getText())); 
+                motorista.setIdCliente(cliente.getId()); 
+                motorista.setNome(nomeMotoPJuridica.getText()); 
+                motorista.setRg(parseInt(rgMotoPJuridica.getText())); 
+                motorista.setDataVencimento(formatarDataEntrada(vencMotoPJuridica.getText())); 
+                if (service.inserirMotorista(motorista)){ 
+                    limparCamposMoto(); 
+                    JOptionPane.showMessageDialog(null, "Motorista cadastrado");                     
+                    preencherTabela();
+                }
+            } 
+        }
+        else{ 
+            JOptionPane.showMessageDialog(null, "Busque um cliente por favor"); 
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnExcluirPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirPJuridicaActionPerformed
+        if (!service.isEmpty(buscarNomePJuridica.getText())){
+            if (service.deletarClientePJuridica(cliente)){
+                cliente = null;
+                JOptionPane.showMessageDialog(null, "Cliente excluído");
+                limparCamposPessoa();
+                preencherTabela();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "O cliente não existe na base de dados");
+            }
+        }
+    }//GEN-LAST:event_btnExcluirPJuridicaActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CadastroPJuridica telaCadPJuridica = new  CadastroPJuridica();
+            telaCadPJuridica.setVisible(true);  
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private boolean validarCampos(){
+        String strCnpj = buscarCnpjPJuridica.getText();
+        ServicoClienteCNPJ cnpj = new ServicoClienteCNPJ(strCnpj);
+        
+        if (service.isEmpty(String.valueOf(buscarNomePJuridica.getText()))){
+            JOptionPane.showMessageDialog(null, "Nome inválido");
+            return false;
+        }
+        else if (!cnpj.isCNPJ()){
+            JOptionPane.showMessageDialog(null, "CNPJ inválido");
+            return false;
+        }
+        else if (!service.isEmpty(buscaInscEstadPJuridica.getText())){
+            JOptionPane.showMessageDialog(null, "Inscrição Estadual Inválida");
+            return false;
+        }        
+        else if (service.isEmpty(buscarEnderPJuridica.getText())){
+            JOptionPane.showMessageDialog(null, "Endereço inválido");
+            return false;
+        }
+        else{
+            return true;
+        }
+    }    
+
+    private boolean verificarCampos(){
+        if (service.isEmpty(nomeMotoPJuridica.getText())){
+            return false;
+        }
+        else if (service.isEmpty(rgMotoPJuridica.getText())){
+            return false;
+        }
+        else if (service.isEmpty(cnhMotoPJuridica.getText())){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    private String formatarDataEntrada(String nasc){ 
+        return service.formatarDataEntrada(nasc); 
+    }
+
+    private void limparCamposMoto(){ 
+        cnhMotoPJuridica.setText(""); 
+        nomeMotoPJuridica.setText(""); 
+        rgMotoPJuridica.setText("");
+        vencMotoPJuridica.setText(null);
+        
+    }    
+    
     /**
      * @param args the command line arguments
      */
@@ -98,6 +650,35 @@ public class PessoaJuridicaJF extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditPJuridica;
+    private javax.swing.JButton btnExcluirPJuridica;
+    private javax.swing.JTextField buscaInscEstadPJuridica;
+    private javax.swing.JFormattedTextField buscarCnpj;
+    private javax.swing.JFormattedTextField buscarCnpjPJuridica;
+    private javax.swing.JTextField buscarEnderPJuridica;
+    private javax.swing.JTextField buscarNomePJuridica;
+    private javax.swing.JTextField cnhMotoPJuridica;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField nomeMotoPJuridica;
+    private javax.swing.JTextField rgMotoPJuridica;
+    private javax.swing.JTable tabelaMotoristasPJuridica;
+    private javax.swing.JFormattedTextField vencMotoPJuridica;
     // End of variables declaration//GEN-END:variables
 }
