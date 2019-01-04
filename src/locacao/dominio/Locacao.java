@@ -3,27 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package alocacao.dominio;
+package locacao.dominio;
 
 /**
  *
  * @author Kimbelly
  */
-public class Alocacao {
-    private int idAlocacao;
+public class Locacao {
+    private int idlocacao;
     private int idCliente;
     private int tipoCarro;
     private String dataRetirada;
     private String dataDevolucao;
-    private int filialRetirada;
-    private int filialDevolucao;
+    private int cnhMotorista;
+    private String placaVeiculo;
 
-    public int getIdAlocacao() {
-        return idAlocacao;
+    public int getIdlocacao() {
+        return idlocacao;
     }
 
-    public void setIdAlocacao(int idAlocacao) {
-        this.idAlocacao = idAlocacao;
+    public void setIdlocacao(int idlocacao) {
+        this.idlocacao = idlocacao;
     }
 
     public int getIdCliente() {
@@ -57,24 +57,19 @@ public class Alocacao {
     public void setDataDevolucao(String dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
     }
-
-    public int getFilialRetirada() {
-        return filialRetirada;
+     public int getCnhMotorista() {
+        return cnhMotorista;
     }
 
-    public void setFilialRetirada(int filialRetirada) {
-        this.filialRetirada = filialRetirada;
+    public void setCnhMotorista(int cnhMotorista) {
+        this.cnhMotorista = cnhMotorista;
     }
 
-    public int getFilialDevolucao() {
-        return filialDevolucao;
+    public String getPlacaVeiculo() {
+        return placaVeiculo;
     }
 
-    public void setFilialDevolucao(int filialDevolucao) {
-        this.filialDevolucao = filialDevolucao;
+    public void setPlacaVeiculo(String placaVeiculo) {
+        this.placaVeiculo = placaVeiculo;
     }
-    
-    
-
-    
 }

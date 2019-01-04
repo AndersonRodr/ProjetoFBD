@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package alocacao.dao;
+package locacao.service;
 
 /**
  *
  * @author Kimbelly
  */
-public class AlocacaoDao {
+public class LocacaoService {
     
 }
