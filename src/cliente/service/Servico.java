@@ -199,7 +199,7 @@ public class Servico {
         }
         return cliente;        
     }
-    
+   
     public boolean deletarClientePFisica(Cliente cliente){
         boolean deletou = false;
         if (dao.deletarPessoaFisica(cliente.getId())){
@@ -242,6 +242,17 @@ public class Servico {
         else{
             return false;
         }
+    }
+    public Motorista buscarMotoristaPelaCNH(int cnh){
+        Motorista motorista = dao.buscarMotoristaPelaCNH(cnh);
+        if(motorista == null){
+            JOptionPane.showMessageDialog(null, "Cliente/Motorista não encontrado");
+            return null;
+        }
+        else{
+            motorista = dao.buscarMotoristaPelaCNH(cnh);
+        }
+        return motorista;
     }
     
     public ArrayList<Motorista> getListaMotoristas(int idCliente){

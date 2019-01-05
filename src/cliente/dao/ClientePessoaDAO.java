@@ -305,6 +305,31 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }
     }
+    public Motorista buscarMotoristaPelaCNH(int cnh){
+        Motorista motorista = new Motorista();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try{
+            statement = connection.prepareStatement("Select * from motorista where cnh = '" + cnh + "'");
+            rs = statement.executeQuery(); 
+                rs.next();
+                motorista.setIdCliente(rs.getInt("id_Cliente"));
+                motorista.setNome(rs.getString("nome"));
+                motorista.setCnh(rs.getInt("cnh"));
+                //DATA DE VENCIMENTO da carteira neh? nera melhor colocar data_vencimento_carteira n?
+                motorista.setDataVencimento(rs.getString("data_vencimento"));
+                motorista.setRg(rs.getInt("rg"));
+                
+        }
+        catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar motorista: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return motorista;
+    }
     
     public ArrayList<Motorista> getListaMotorista(int idCliente){
         ArrayList<Motorista> listaMotoristas = new ArrayList<Motorista>();
@@ -330,6 +355,22 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement, rs);
         }
         return listaMotoristas;
+    }
+    public boolean deletarMotorista(int id){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("Delete from motorista where id_cliente = ?");
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar cliente: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
     }
     
     public boolean editarCliente(Cliente cliente){
@@ -385,7 +426,7 @@ public class ClientePessoaDAO {
             return true;
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possível editar pessoa física: " + ex);
+            JOptionPane.showMessageDialog(null, "Não foi possível editar pessoa juridica: " + ex);
             return false;
         }
         finally{
@@ -393,23 +434,7 @@ public class ClientePessoaDAO {
         }
     }
     
-    public boolean deletarMotorista(int id){
-        Connection connection = DataBaseConnection.getConexao();
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement("Delete from motorista where id_cliente = ?");
-            statement.setInt(1, id);
-            statement.executeUpdate();
-            return true;          
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao deletar cliente: " + ex);
-        }
-        finally{
-            DataBaseConnection.fecharConexao(connection, statement);
-        }
-        return false;
-    }
-
+  
     public void doReserva(Reserva reserva) {
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
@@ -435,6 +460,7 @@ public class ClientePessoaDAO {
         
         
     } 
+    //COLOQUEI ESSE METODO NO LOCACACAODAO TBM , escolher um p tirar
      public void doLocacao(Locacao locacao) {
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;

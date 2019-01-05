@@ -6,17 +6,38 @@
 
 package locacao.gui;
 
+import cliente.dominio.Cliente;
+import cliente.service.Servico;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import locacao.dominio.Locacao;
+import locacao.service.LocacaoService;
+import reserva.service.ReservaService;
+import veiculo.dominio.Veiculo;
+import veiculo.service.VeiculoService;
+
 /**
  *
  * @author Kimbelly
  */
 public class LocacaoJF extends javax.swing.JFrame {
 
-    private int tipocliente;
+    private int tipocliente = 1;//1-PESSOA FISICA 2-PESSOA JURIDICA
+    Servico service = new Servico();
+
 
     /** Creates new form Alocacao */
     public LocacaoJF() {
         initComponents();
+    }
+    private String formatarData(String nasc){
+        String ano = nasc.substring(6, 10);
+
+        String dia = nasc.substring(0, 2);
+
+        String mes = nasc.substring(3, 5);
+
+        return ano+"-"+mes+"-"+dia;
     }
 
     /** This method is called from within the constructor to
@@ -29,8 +50,8 @@ public class LocacaoJF extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel7 = new javax.swing.JLabel();
-        btnReserva = new javax.swing.JButton();
-        tipoReserva = new javax.swing.JComboBox<>();
+        btnAlocarVeiculo = new javax.swing.JButton();
+        tipoLocacao = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         tipoClienteBox = new javax.swing.JComboBox<>();
         campoDado = new javax.swing.JTextField();
@@ -38,31 +59,31 @@ public class LocacaoJF extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        dataRetiradaReserva = new javax.swing.JFormattedTextField();
-        dataDevolReserva = new javax.swing.JFormattedTextField();
+        dataRetiradaLocacao = new javax.swing.JFormattedTextField();
+        dataDevoluLocacao = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        cnhMotorista = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
+        placaVeiculoLoc = new javax.swing.JTextPane();
         jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel7.setText("Tipo:");
 
-        btnReserva.setText("ALOCAR VEÍCULO");
-        btnReserva.addActionListener(new java.awt.event.ActionListener() {
+        btnAlocarVeiculo.setText("ALOCAR VEÍCULO");
+        btnAlocarVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReservaActionPerformed(evt);
+                btnAlocarVeiculoActionPerformed(evt);
             }
         });
 
-        tipoReserva.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2"}));
-        tipoReserva.addActionListener(new java.awt.event.ActionListener() {
+        tipoLocacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2"}));
+        tipoLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tipoReservaActionPerformed(evt);
+                tipoLocacaoActionPerformed(evt);
             }
         });
 
@@ -75,6 +96,7 @@ public class LocacaoJF extends javax.swing.JFrame {
             }
         });
 
+        campoDado.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         campoDado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoDadoActionPerformed(evt);
@@ -102,29 +124,34 @@ public class LocacaoJF extends javax.swing.JFrame {
         jLabel2.setText("Data de retirada:");
 
         try {
-            dataRetiradaReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            dataRetiradaLocacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        dataRetiradaReserva.addActionListener(new java.awt.event.ActionListener() {
+        dataRetiradaLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dataRetiradaReservaActionPerformed(evt);
+                dataRetiradaLocacaoActionPerformed(evt);
             }
         });
 
         try {
-            dataDevolReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            dataDevoluLocacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        dataDevoluLocacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dataDevoluLocacaoActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Data de devolução:");
 
         jLabel4.setText("CNH do motorista:");
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(cnhMotorista);
 
-        jScrollPane2.setViewportView(jTextPane2);
+        jScrollPane2.setViewportView(placaVeiculoLoc);
 
         jLabel11.setText("Placa do veículo:");
 
@@ -135,48 +162,45 @@ public class LocacaoJF extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReserva)
-                        .addGap(105, 105, 105))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel1)
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(102, 102, 102)
-                                .addComponent(jLabel7)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(tipoReserva, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(dataRetiradaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel2)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel10))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(dataDevolReserva, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                                                    .addComponent(jLabel11))
-                                                .addGap(6, 6, 6))
-                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(tipoClienteBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(29, 29, 29))))))
+                                            .addComponent(dataRetiradaLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 114, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane1))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dataDevoluLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)))
+                            .addComponent(tipoClienteBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(tipoLocacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(29, 29, 29))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(btnAlocarVeiculo)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(79, 79, 79))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,19 +210,19 @@ public class LocacaoJF extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dataRetiradaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dataDevolReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dataRetiradaLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dataDevoluLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -210,25 +234,46 @@ public class LocacaoJF extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tipoReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addComponent(btnReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(tipoLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaActionPerformed
+    private void btnAlocarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarVeiculoActionPerformed
         if(validarCampos()){
-
+            Cliente pf = new Cliente();
+            Servico service = new Servico();
+            Locacao locacao = new Locacao();
+            
+            String cnhEmString = cnhMotorista.getText();
+            int cnhMotorista = Integer.parseInt(cnhEmString);
+            locacao.setCnhMotorista(cnhMotorista);
+            locacao.setPlacaVeiculo(placaVeiculoLoc.getText());
+            pf = service.buscarPessoaFisica(campoDado.getText());
+            if(pf != null){
+              locacao.setIdCliente(pf.getPFisica().getId());   
+            } locacao.setIdCliente(pf.getPFisica().getId()); 
+            //locacao.setIdLocacao();
+            locacao.setDataRetirada(service.formatarDataEntrada(dataRetiradaLocacao.getText()));
+            locacao.setDataDevolucao(service.formatarDataEntrada(dataDevoluLocacao.getText()));
+            LocacaoService lService = new LocacaoService();
+            lService.doLocacao(locacao);
+            JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
+            limparCampos();
+            
         }
-    }//GEN-LAST:event_btnReservaActionPerformed
+        
+        
+    }//GEN-LAST:event_btnAlocarVeiculoActionPerformed
 
-    private void tipoReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoReservaActionPerformed
+    private void tipoLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoLocacaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tipoReservaActionPerformed
+    }//GEN-LAST:event_tipoLocacaoActionPerformed
 
     private void tipoClienteBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoClienteBoxActionPerformed
         if(tipoClienteBox.getSelectedIndex()==1){
@@ -245,9 +290,13 @@ public class LocacaoJF extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoDadoActionPerformed
 
-    private void dataRetiradaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataRetiradaReservaActionPerformed
+    private void dataRetiradaLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataRetiradaLocacaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_dataRetiradaReservaActionPerformed
+    }//GEN-LAST:event_dataRetiradaLocacaoActionPerformed
+
+    private void dataDevoluLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataDevoluLocacaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dataDevoluLocacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,10 +337,11 @@ public class LocacaoJF extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnReserva;
+    private javax.swing.JButton btnAlocarVeiculo;
     private javax.swing.JTextField campoDado;
-    private javax.swing.JFormattedTextField dataDevolReserva;
-    private javax.swing.JFormattedTextField dataRetiradaReserva;
+    private javax.swing.JTextPane cnhMotorista;
+    private javax.swing.JFormattedTextField dataDevoluLocacao;
+    private javax.swing.JFormattedTextField dataRetiradaLocacao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -303,19 +353,43 @@ public class LocacaoJF extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JTextPane placaVeiculoLoc;
     private javax.swing.JComboBox<String> tipoClienteBox;
-    private javax.swing.JComboBox<String> tipoReserva;
+    private javax.swing.JComboBox<String> tipoLocacao;
     // End of variables declaration//GEN-END:variables
 
     private boolean validarCampos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String dataRetirada = formatarData(dataRetiradaLocacao.getText());
+        String dataDevolucao = formatarData(dataDevoluLocacao.getText());
+        String cnhMotoristaEmString = (cnhMotorista.getText());
+        String placaVeiculo = (placaVeiculoLoc.getText());
+        String campoIdClienteCPFouCNPJ = (campoDado.getText());
+        
+        LocacaoService lService = new LocacaoService();
+        Servico servico = new Servico();
+        
+        if(!lService.isValidoDatas(dataRetirada, dataDevolucao)){
+            JOptionPane.showMessageDialog(null, "Datas inválidas");
+            return false;
+        }if(!lService.isValidoCNH(cnhMotoristaEmString)){
+            JOptionPane.showMessageDialog(null, "CNH inválida ou não cadastrada");
+            return false;
+        }if(!lService.isValidoPlaca(placaVeiculo)){
+            JOptionPane.showMessageDialog(null, "Placa inválida ou não cadastrada");
+            return false;
+        }if(!lService.isValidoIdClienteCPFouCNPJ(campoIdClienteCPFouCNPJ)){
+            JOptionPane.showMessageDialog(null, "CPF ou CNPJ inválido ou não cadastrado");
+            return false;
+        }
+        return true;
     }
     private void limparCampos() {
-        dataDevolReserva.setText("");
-        dataRetiradaReserva.setText("");
+        dataDevoluLocacao.setText("");
+        dataRetiradaLocacao.setText("");
         campoDado.setText("");
+        cnhMotorista.setText("");
+        placaVeiculoLoc.setText("");
+        
     }
 
 }
