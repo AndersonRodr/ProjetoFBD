@@ -71,7 +71,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         tabelaMotoristasPFisica = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        excluirMotorista = new javax.swing.JButton();
         nomeMoto = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         cnhMoto = new javax.swing.JTextField();
@@ -309,13 +308,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
 
         jLabel7.setText("Nome:");
 
-        excluirMotorista.setText("Excluir Motorista");
-        excluirMotorista.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excluirMotoristaActionPerformed(evt);
-            }
-        });
-
         jLabel8.setText("CNH:");
 
         cnhMoto.addActionListener(new java.awt.event.ActionListener() {
@@ -349,10 +341,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(excluirMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(197, 197, 197))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -398,9 +386,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(excluirMotorista)
-                .addGap(18, 18, 18)
+                .addGap(52, 52, 52)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -583,10 +569,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buscaSexoMPFisicaActionPerformed
 
-    private void excluirMotoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirMotoristaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_excluirMotoristaActionPerformed
-
     private boolean verificarCampos(){
         if (service.isEmpty(nomeMoto.getText())){
             return false;
@@ -720,7 +702,6 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private javax.swing.JRadioButton buscaSexoMPFisica;
     private javax.swing.JFormattedTextField buscarCPF;
     private javax.swing.JTextField cnhMoto;
-    private javax.swing.JButton excluirMotorista;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

@@ -122,9 +122,9 @@ public class ClienteJF extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPFisicaActionPerformed
 
     private void btnPJuridicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPJuridicaActionPerformed
-        CadastroPJuridica telaCadPJuridica = new  CadastroPJuridica();
+        PessoaJuridicaJF telaPJuridica = new  PessoaJuridicaJF();
 //        if (!frameCadPJuridicaOpen){
-            telaCadPJuridica.setVisible(true);
+            telaPJuridica.setVisible(true);
 //            frameCadPJuridicaOpen = true;
 //        }
     }//GEN-LAST:event_btnPJuridicaActionPerformed
