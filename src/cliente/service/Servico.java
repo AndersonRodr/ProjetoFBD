@@ -248,6 +248,8 @@ public class Servico {
         if(motorista == null){
             JOptionPane.showMessageDialog(null, "Cliente/Motorista não encontrado");
             return null;
+       //INCOMPLETO }else if(motorista.getDataVencimento()>=){
+            
         }
         else{
             motorista = dao.buscarMotoristaPelaCNH(cnh);

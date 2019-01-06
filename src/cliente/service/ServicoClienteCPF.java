@@ -16,7 +16,16 @@ public class ServicoClienteCPF {
     public ServicoClienteCPF(String c, boolean m) {
         this.cpf = this.format(c,false);
     }
-    
+
+    public ServicoClienteCPF() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public ServicoClienteCPF(String cpf) {
+        this.cpf=cpf;
+    }
+    public void setCpf(String cpf){
+        this.cpf = cpf;
+    }
     
     public boolean isCPF(){
         

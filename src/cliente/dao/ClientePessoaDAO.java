@@ -459,7 +459,11 @@ public class ClientePessoaDAO {
         }
         
         
-    } 
+    }
+    //incompl
+    public boolean isLocadoOuReservadoMesmoDia(String dataRetirada, String dataDev,String placaVeic){
+        return false;
+    }
     //COLOQUEI ESSE METODO NO LOCACACAODAO TBM , escolher um p tirar
      public void doLocacao(Locacao locacao) {
         Connection connection = DataBaseConnection.getConexao();
@@ -483,4 +487,21 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }  
     } 
+     //COLOQUEI ESSE METODO NO LOCACACAODAO TBM , escolher um p tirar
+     public void deleteLocacao(Locacao locacao) {
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+           // statement = connection.prepareStatement("INSERT INTO locacao (data_retirada, data_devolucao, cnh_motorista, placa_veiculo, id_cliente)"
+            //        + "VALUES(?,?,?,?,?)");
+            statement.executeUpdate();
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir locação do veículo " + ex);
+            
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }  
+     }
 }

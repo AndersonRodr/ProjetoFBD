@@ -54,5 +54,9 @@ public class VeiculoService {
         VeiculoDao dao = new VeiculoDao();
         dao.updateKm(placa, km);
     }
+    public boolean isPlacaDigitoCorreto(String placa){
+        //inc
+        return true;
+    }
     
 }

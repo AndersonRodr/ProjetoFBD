@@ -16,11 +16,18 @@ import locacao.dominio.Locacao;
  *
  * @author Kimbelly
  */
-public class LocacaoDao {
+public class LocacaoDAO {
     // N seria verificar se ja ta alocado/reservado?
     //isso aq de baixo é p ficar aq ou no veiculoDAO?
-    public boolean veiculoJaAlocado(String placaVeiculo){
-        return false;
+    public boolean veiculoJaAlocadoMesmoDia(String dataRetirada, String dataDev,String placaVeiculo){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        Locacao locacaoIgual = buscarLocacao(dataRetirada, dataDev, placaVeiculo);
+        if (locacaoIgual==null){
+            return false;
+        }else{
+            return true;
+        }
     }
     public void doLocacao(Locacao locacao) {
         Connection connection = DataBaseConnection.getConexao();
@@ -44,8 +51,32 @@ public class LocacaoDao {
             DataBaseConnection.fecharConexao(connection, statement);
         }  
     }
-    public void removerLocacao(){
+    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        Locacao buscaLocacaoDada= buscarLocacao(dataRetirada, dataDev, placaVeic);
+        if(buscaLocacaoDada ==null){
+            return false;
+        }
+        int idLocacao = buscaLocacaoDada.getIdLocacao();
+        try {
+            statement = connection.prepareStatement("Delete from locacao where id_Locacao = ?");
+            statement.setInt(1, idLocacao);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar locacao: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
         
+    //METODO ABAIXO INCOM
+    }public Locacao buscarLocacao(String dataRetirada, String dataDev, String placaVeic){
+        Locacao locacaoAchada = null;
+        //inc
+        return locacaoAchada;
     }
     
 }

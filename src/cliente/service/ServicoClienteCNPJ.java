@@ -20,7 +20,16 @@ public class ServicoClienteCNPJ {
     public ServicoClienteCNPJ(String C) {
         this.cnpj = this.format(C,false);
     }
-    
+
+    public ServicoClienteCNPJ() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public void setCNPJ(String cnpj){
+        this.cnpj = cnpj;
+    }
+    public ServicoClienteCNPJ(String cnpj,String nd){
+        this.cnpj = cnpj;
+    }
     
     public boolean isCNPJ(){
         

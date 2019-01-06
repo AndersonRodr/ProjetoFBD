@@ -68,6 +68,7 @@ public class LocacaoJF extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         placaVeiculoLoc = new javax.swing.JTextPane();
         jLabel11 = new javax.swing.JLabel();
+        btnRemoverLocacao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,6 +156,13 @@ public class LocacaoJF extends javax.swing.JFrame {
 
         jLabel11.setText("Placa do veículo:");
 
+        btnRemoverLocacao.setText("REMOVER LOCAÇÃO");
+        btnRemoverLocacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverLocacaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,16 +195,21 @@ public class LocacaoJF extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6))
+                                    .addComponent(jLabel6)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(tipoLocacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(tipoLocacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel7)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(11, 11, 11)
+                                                .addComponent(btnRemoverLocacao)))
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(29, 29, 29))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addComponent(btnAlocarVeiculo)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
@@ -236,7 +249,9 @@ public class LocacaoJF extends javax.swing.JFrame {
                     .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tipoLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
-                .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRemoverLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(73, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -246,23 +261,7 @@ public class LocacaoJF extends javax.swing.JFrame {
 
     private void btnAlocarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarVeiculoActionPerformed
         if(validarCampos()){
-            Cliente pf = new Cliente();
-            Servico service = new Servico();
-            Locacao locacao = new Locacao();
-            
-            String cnhEmString = cnhMotorista.getText();
-            int cnhMotorista = Integer.parseInt(cnhEmString);
-            locacao.setCnhMotorista(cnhMotorista);
-            locacao.setPlacaVeiculo(placaVeiculoLoc.getText());
-            pf = service.buscarPessoaFisica(campoDado.getText());
-            if(pf != null){
-              locacao.setIdCliente(pf.getPFisica().getId());   
-            } locacao.setIdCliente(pf.getPFisica().getId()); 
-            //locacao.setIdLocacao();
-            locacao.setDataRetirada(service.formatarDataEntrada(dataRetiradaLocacao.getText()));
-            locacao.setDataDevolucao(service.formatarDataEntrada(dataDevoluLocacao.getText()));
-            LocacaoService lService = new LocacaoService();
-            lService.doLocacao(locacao);
+           //incompleto
             JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
             limparCampos();
             
@@ -297,6 +296,32 @@ public class LocacaoJF extends javax.swing.JFrame {
     private void dataDevoluLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataDevoluLocacaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dataDevoluLocacaoActionPerformed
+
+    private void btnRemoverLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverLocacaoActionPerformed
+        // TODO add your handling code here:
+        if(validarCampos()){
+            Cliente pf = new Cliente();
+            Servico service = new Servico();
+            Locacao locacao = new Locacao();
+            
+            String cnhEmString = cnhMotorista.getText();
+            int cnhMotorista = Integer.parseInt(cnhEmString);
+            locacao.setCnhMotorista(cnhMotorista);
+            locacao.setPlacaVeiculo(placaVeiculoLoc.getText());
+            pf = service.buscarPessoaFisica(campoDado.getText());
+            if(pf != null){
+              locacao.setIdCliente(pf.getPFisica().getId());   
+            } locacao.setIdCliente(pf.getPFisica().getId()); 
+            //locacao.setIdLocacao();
+            locacao.setDataRetirada(service.formatarDataEntrada(dataRetiradaLocacao.getText()));
+            locacao.setDataDevolucao(service.formatarDataEntrada(dataDevoluLocacao.getText()));
+            LocacaoService lService = new LocacaoService();
+            lService.doLocacao(locacao);
+            JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
+            limparCampos();
+        }
+            
+    }//GEN-LAST:event_btnRemoverLocacaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -338,6 +363,7 @@ public class LocacaoJF extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlocarVeiculo;
+    private javax.swing.JButton btnRemoverLocacao;
     private javax.swing.JTextField campoDado;
     private javax.swing.JTextPane cnhMotorista;
     private javax.swing.JFormattedTextField dataDevoluLocacao;
@@ -375,9 +401,10 @@ public class LocacaoJF extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "CNH inválida ou não cadastrada");
             return false;
         }if(!lService.isValidoPlaca(placaVeiculo)){
-            JOptionPane.showMessageDialog(null, "Placa inválida ou não cadastrada");
+            JOptionPane.showMessageDialog(null, "Placa inválida, não cadastrada ou não pertecente ao Brasil");
             return false;
-        }if(!lService.isValidoIdClienteCPFouCNPJ(campoIdClienteCPFouCNPJ)){
+            //COLOQUEI COMO PESSOA FISICA
+        }if(!lService.isValidoIdClienteCPFouCNPJ(campoIdClienteCPFouCNPJ,"1")){
             JOptionPane.showMessageDialog(null, "CPF ou CNPJ inválido ou não cadastrado");
             return false;
         }
