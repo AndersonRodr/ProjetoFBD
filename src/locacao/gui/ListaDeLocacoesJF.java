@@ -74,7 +74,6 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
         tabelaLocacoes = new javax.swing.JTable();
         btnExcluirLocacao = new javax.swing.JButton();
         btnExcluirTodasLocacoes = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         textViewPesquisarLocacao = new javax.swing.JLabel();
@@ -95,7 +94,7 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(207, Short.MAX_VALUE)
+                .addContainerGap(233, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(158, 158, 158))
         );
@@ -146,13 +145,6 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setText("jTextField1");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jScrollPane2.setViewportView(jTextPane1);
 
         textViewPesquisarLocacao.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -183,12 +175,11 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
                         .addComponent(textViewPesquisarLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63)))))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,12 +188,9 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(textViewPesquisarLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72)
@@ -246,10 +234,6 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
     private void btnExcluirTodasLocacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirTodasLocacoesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExcluirTodasLocacoesActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -296,7 +280,6 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTable tabelaLocacoes;
     private javax.swing.JLabel textViewPesquisarLocacao;

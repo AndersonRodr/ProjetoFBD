@@ -144,6 +144,88 @@ public class LocacaoDAO {
         
         return locacaoAchada;
     }
+    public ArrayList<Locacao> getListaLocacoesBuscaPlaca(String placaVeic){
+        ArrayList<Locacao> listaLocacoes = new ArrayList<Locacao>();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM locacao where placa_veiculo = '" + placaVeic + "'");
+            rs = statement.executeQuery(); 
+            while (rs.next()){
+                Locacao locacao = new Locacao();
+                locacao.setIdLocacao(rs.getInt("id_Locacao"));
+                locacao.setPlacaVeiculo(rs.getString("placa_veiculo"));
+                locacao.setCnhMotorista(rs.getInt("cnh_motorista"));
+                locacao.setDataRetirada(rs.getString("data_retirada"));
+                locacao.setDataDevolucao(rs.getString("data_devolucao"));
+                locacao.setIdCliente(rs.getInt("id_cliente"));
+                
+                listaLocacoes.add(locacao);
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar locações referentes a essa placa: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return listaLocacoes;
+    }
+    public ArrayList<Locacao> getListaLocacoesBuscaCNHmotorista(int cnhMotorista){
+        ArrayList<Locacao> listaLocacoes = new ArrayList<Locacao>();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM locacao where cnh_motorista = '" + cnhMotorista + "'");
+            rs = statement.executeQuery(); 
+            while (rs.next()){
+                Locacao locacao = new Locacao();
+                locacao.setIdLocacao(rs.getInt("id_Locacao"));
+                locacao.setPlacaVeiculo(rs.getString("placa_veiculo"));
+                locacao.setCnhMotorista(rs.getInt("cnh_motorista"));
+                locacao.setDataRetirada(rs.getString("data_retirada"));
+                locacao.setDataDevolucao(rs.getString("data_devolucao"));
+                locacao.setIdCliente(rs.getInt("id_cliente"));
+                
+                listaLocacoes.add(locacao);
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar locações referentes a essa cnh: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return listaLocacoes;
+    }
+    public ArrayList<Locacao> getListaLocacoesBuscaPeloIdCliente(int idCliente){
+        ArrayList<Locacao> listaLocacoes = new ArrayList<Locacao>();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM locacao WHERE id_cliente = '" + idCliente + "'");
+            rs = statement.executeQuery(); 
+            while (rs.next()){
+                Locacao locacao = new Locacao();
+                locacao.setIdLocacao(rs.getInt("id_Locacao"));
+                locacao.setPlacaVeiculo(rs.getString("placa_veiculo"));
+                locacao.setCnhMotorista(rs.getInt("cnh_motorista"));
+                locacao.setDataRetirada(rs.getString("data_retirada"));
+                locacao.setDataDevolucao(rs.getString("data_devolucao"));
+                locacao.setIdCliente(rs.getInt("id_cliente"));
+                
+                listaLocacoes.add(locacao);
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar locações referentes a essa cnh: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return listaLocacoes;
+    }
+    
      public ArrayList<Locacao> getListaLocacoes(){
         ArrayList<Locacao> listaLocacoes = new ArrayList<Locacao>();
         Connection connection = DataBaseConnection.getConexao();

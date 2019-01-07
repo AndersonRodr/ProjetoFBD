@@ -210,11 +210,22 @@ public class LocacaoService {
         ArrayList<Locacao> listaLocacoes = daoLocacao.getListaLocacoes();
         return listaLocacoes;
     }
-    //fazer dif buscas conforme os dados buscados
-    public Locacao buscarLocacao(){
-        Locacao locacaoBuscada = null;
+    //fazer dif buscas conforme os dados buscados // pode pesquisar por somente um item e o resto vazio sl, tanto faz
+    public ArrayList<Locacao> buscarLocacoesRelacionadas(String placaVeic,String cnhMotor, String dataRetirada, String dataDev, int idCliente){
+        ArrayList<Locacao> listaLocacoesDaBusca = null;
+        if(isValidoPlaca(placaVeic)){
+            listaLocacoesDaBusca=daoLocacao.getListaLocacoesBuscaPlaca(placaVeic);
+            
+        }else if(isValidoCNH(cnhMotor)){
+            int cnhMotorista = Integer.parseInt(cnhMotor);
+            listaLocacoesDaBusca=daoLocacao.getListaLocacoesBuscaCNHmotorista(cnhMotorista);
+            
+        }else if(!service.isEmpty(String.valueOf(idCliente))){
+            listaLocacoesDaBusca=daoLocacao.getListaLocacoesBuscaPeloIdCliente(idCliente);
+            
+        }
         /////////////////////////INCOMPLETOOO
-        return locacaoBuscada;
+        return listaLocacoesDaBusca;
     }
     
     public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
