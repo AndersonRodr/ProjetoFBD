@@ -7,7 +7,6 @@ package locacao.service;
 
 import cliente.dao.ClientePessoaDAO;
 import cliente.dominio.Motorista;
-import cliente.dominio.Reserva;
 import cliente.service.Servico;
 import cliente.service.ServicoClienteCNPJ;
 import cliente.service.ServicoClienteCPF;
@@ -214,6 +213,7 @@ public class LocacaoService {
     //fazer dif buscas conforme os dados buscados
     public Locacao buscarLocacao(){
         Locacao locacaoBuscada = null;
+        /////////////////////////INCOMPLETOOO
         return locacaoBuscada;
     }
     

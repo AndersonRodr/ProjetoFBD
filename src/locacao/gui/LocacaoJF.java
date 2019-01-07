@@ -25,7 +25,7 @@ import veiculo.service.VeiculoService;
  */
 public class LocacaoJF extends javax.swing.JFrame {
 
-    private int tipocliente = 1;//1-PESSOA FISICA 2-PESSOA JURIDICA
+    private int tipoCliente = 1;//1-PESSOA FISICA 2-PESSOA JURIDICA
     Servico service = new Servico();
 
 
@@ -53,6 +53,7 @@ public class LocacaoJF extends javax.swing.JFrame {
     private void initComponents() {
 
         buscarCPF = new javax.swing.JFormattedTextField();
+        buscaEndePFisica = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         btnAlocarVeiculo = new javax.swing.JButton();
         tipoLocacao = new javax.swing.JComboBox<>();
@@ -189,16 +190,10 @@ public class LocacaoJF extends javax.swing.JFrame {
         });
 
         try {
-            placaVeiculoLoc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####")));
+            placaVeiculoLoc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        placaVeiculoLoc.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        placaVeiculoLoc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                placaVeiculoLocActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -213,9 +208,6 @@ public class LocacaoJF extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tipoClienteBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
-                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,14 +233,15 @@ public class LocacaoJF extends javax.swing.JFrame {
                                         .addComponent(dataRetiradaLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel2)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(cnhMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cnhMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(dataDevoluLocacao)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel11)
-                                    .addComponent(dataDevoluLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(placaVeiculoLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(26, 26, 26))))
+                                    .addComponent(placaVeiculoLoc))
+                                .addGap(44, 44, 44))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
@@ -340,15 +333,21 @@ public class LocacaoJF extends javax.swing.JFrame {
 
     private void tipoLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoLocacaoActionPerformed
         // TODO add your handling code here:
+        if(tipoClienteBox.getSelectedIndex()==1){
+            tipoCliente = 2;
+        }else{ 
+            tipoCliente = 1;
+            
+        }
     }//GEN-LAST:event_tipoLocacaoActionPerformed
 
     private void tipoClienteBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoClienteBoxActionPerformed
         if(tipoClienteBox.getSelectedIndex()==1){
             campoDado.setText("  .   .   /    -  ");
-            tipocliente = 2;
+            tipoCliente = 2;
         }else{
             campoDado.setText("   .   .   -  ");
-            tipocliente = 1;
+            tipoCliente = 1;
 
         }
     }//GEN-LAST:event_tipoClienteBoxActionPerformed
@@ -394,10 +393,6 @@ public class LocacaoJF extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cnhMotoristaActionPerformed
 
-    private void placaVeiculoLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placaVeiculoLocActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_placaVeiculoLocActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -439,6 +434,7 @@ public class LocacaoJF extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlocarVeiculo;
     private javax.swing.JButton btnRemoverLocacao;
+    private javax.swing.JTextField buscaEndePFisica;
     private javax.swing.JFormattedTextField buscarCPF;
     private javax.swing.JFormattedTextField campoDado;
     private javax.swing.JFormattedTextField cnhMotorista;
@@ -461,7 +457,7 @@ public class LocacaoJF extends javax.swing.JFrame {
     private boolean validarCampos() {
         String dataRetirada = formatarData(dataRetiradaLocacao.getText());
         String dataDevolucao = formatarData(dataDevoluLocacao.getText());
-        String cnhMotoristaEmString = (campoDado.getText());
+        String cnhMotoristaEmString = (cnhMotorista.getText());
         String placaVeiculo = (placaVeiculoLoc.getText());
         placaVeiculo = placaVeiculo.replace("-", "");
         String campoIdClienteCPFouCNPJ = (campoDado.getText());
@@ -481,7 +477,7 @@ public class LocacaoJF extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Placa inválida, não cadastrada ou não pertecente ao Brasil");
             return false;
             //COLOQUEI COMO PESSOA FISICA
-        }if(!lService.isValidoIdClienteCPFouCNPJ(campoIdClienteCPFouCNPJ,"1")){
+        }if(!lService.isValidoIdClienteCPFouCNPJ(campoIdClienteCPFouCNPJ,String.valueOf(tipoCliente))){
             JOptionPane.showMessageDialog(null, "CPF ou CNPJ inválido ou não cadastrado");
             return false;
         }

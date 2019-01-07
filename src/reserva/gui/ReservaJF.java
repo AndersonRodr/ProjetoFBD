@@ -7,11 +7,11 @@ package reserva.gui;
 
 import cliente.dominio.Cliente;
 import cliente.dominio.PessoaFisica;
-import cliente.dominio.Reserva;
 import cliente.service.Servico;
 import filial.service.ServicoFilial;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import reserva.dominio.Reserva;
 import reserva.service.ReservaService;
 
 /**
@@ -260,18 +260,19 @@ public class ReservaJF extends javax.swing.JFrame {
             Servico service = new Servico();
             Reserva reserva = new Reserva();
             if(tipocliente==1){               
+                pf = service.buscarPessoaFisica(campoDado.getText());
+                reserva.setIdCliente(pf.getPFisica().getId());
                 
-   
             }else{
-//                pf = service.buscarPessoaJuridica(); TODO
+                pf = service.buscarPessoaJuridica(campoDado.getText());
+                reserva.setIdCliente(pf.getpJuridica().getIdCliente());
             }
-            pf = service.buscarPessoaFisica(campoDado.getText());
-            reserva.setIdCliente(pf.getPFisica().getId());
+            
             reserva.setDataDevolucao(service.formatarDataEntrada(dataDevolReserva.getText()));
             reserva.setDataRetirada(service.formatarDataEntrada(dataRetiradaReserva.getText()));
-            reserva.setFilialRetirada(filialService.buscarFilial((String) filialRetirada.getSelectedItem()).getId());
-            reserva.setFilialDevolucao(filialService.buscarFilial((String) filialDevolucao.getSelectedItem()).getId());
-            reserva.setTipoCarro(Integer.parseInt((String)tipoReserva.getSelectedItem()));
+            reserva.setIdFilialOrigem(filialService.buscarFilial((String) filialRetirada.getSelectedItem()).getId());
+            reserva.setIdFilialDevolucao(filialService.buscarFilial((String) filialDevolucao.getSelectedItem()).getId());
+            reserva.setIdTipoVeiculo(Integer.parseInt((String)tipoReserva.getSelectedItem()));
             ReservaService rService = new ReservaService();
             rService.doReserva(reserva);
             JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
@@ -371,7 +372,7 @@ public class ReservaJF extends javax.swing.JFrame {
                return false;
            }
         }else{
-           if(!servico.buscarCPF((campoDado.getText()))){
+           if(!servico.buscarCNPJ((campoDado.getText()))){
               JOptionPane.showMessageDialog(null, "Cliente não encontrado");
               return false; 
            } 

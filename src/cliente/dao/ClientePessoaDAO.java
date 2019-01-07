@@ -4,7 +4,6 @@ import cliente.dominio.Cliente;
 import cliente.dominio.Motorista;
 import cliente.dominio.PessoaFisica;
 import cliente.dominio.PessoaJuridica;
-import cliente.dominio.Reserva;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import locacao.dominio.Locacao;
+import reserva.dominio.Reserva;
 
 public class ClientePessoaDAO {
     
@@ -459,9 +459,9 @@ public class ClientePessoaDAO {
                     + "VALUES(?,?,?,?,?,?)");
             statement.setString(1, reserva.getDataRetirada());
             statement.setString(2, reserva.getDataDevolucao());
-            statement.setInt(3, reserva.getFilialRetirada());
-            statement.setInt(4, reserva.getFilialDevolucao());
-            statement.setInt(5, reserva.getTipoCarro());
+            statement.setInt(3, reserva.getIdFilialOrigem());
+            statement.setInt(4, reserva.getIdFilialDevolucao());
+            statement.setInt(5, reserva.getIdTipoVeiculo());
             statement.setInt(6, reserva.getIdCliente());
             statement.executeUpdate();
             
