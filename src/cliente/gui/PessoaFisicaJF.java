@@ -79,6 +79,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         rgMoto = new javax.swing.JTextField();
         btnCadMotoristaPFisica = new javax.swing.JButton();
         vencimentoMoto = new javax.swing.JFormattedTextField();
+        jButton2 = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -333,6 +334,15 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
+        jButton2.setBackground(new java.awt.Color(255, 51, 51));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Excluir Motorista");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -375,6 +385,10 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                         .addGap(191, 191, 191)
                         .addComponent(btnCadMotoristaPFisica, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(188, 188, 188))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,7 +400,9 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -569,6 +585,27 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_buscaSexoMPFisicaActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (!service.isEmpty(buscaNomePFisica.getText())){
+            if (tabelaMotoristasPFisica.getSelectedRow() != -1){
+                DefaultTableModel tabelinha = (DefaultTableModel) tabelaMotoristasPFisica.getModel();
+                Motorista moto = new Motorista();
+                int i = tabelaMotoristasPFisica.getSelectedRow();
+                moto.setCnh((Integer) tabelaMotoristasPFisica.getValueAt(i, 1));
+                if (service.removerMotorista(moto)){
+                    JOptionPane.showMessageDialog(null, "Motorista removido");
+                    tabelinha.removeRow(tabelaMotoristasPFisica.getSelectedRow());    
+                }
+            }  
+            else{
+                JOptionPane.showMessageDialog(null, "Selecione um motorista para excluir");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Busque um cliente");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private boolean verificarCampos(){
         if (service.isEmpty(nomeMoto.getText())){
             return false;
@@ -703,6 +740,7 @@ public class PessoaFisicaJF extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField buscarCPF;
     private javax.swing.JTextField cnhMoto;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

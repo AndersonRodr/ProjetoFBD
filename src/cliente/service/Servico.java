@@ -261,4 +261,9 @@ public class Servico {
         ArrayList<Motorista> listaMotorista = dao.getListaMotorista(idCliente);
         return listaMotorista;
     }
+    
+    public boolean removerMotorista(Motorista moto){
+        boolean removeu = dao.deletarMotoristaCnh(moto.getCnh());
+        return removeu;
+    }
 }

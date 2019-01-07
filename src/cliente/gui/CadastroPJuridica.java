@@ -193,7 +193,7 @@ public class CadastroPJuridica extends javax.swing.JFrame {
                 try {
                     if (service.cadClientePJuridica(cliente, pessoa)){
                         limparCampos();
-                        JOptionPane.showMessageDialog(null, "Cliente Cadastrado!");
+                        JOptionPane.showMessageDialog(null, "Cliente Cadastrado com sucesso!");
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Erro ao realizar cadastro.");

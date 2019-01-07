@@ -504,4 +504,21 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }  
      }
+     
+    public boolean deletarMotoristaCnh(int cnh){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("Delete from motorista where CNH = ?");
+            statement.setInt(1, cnh);
+            statement.executeUpdate();
+            return true;          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar Motorista: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }
 }
