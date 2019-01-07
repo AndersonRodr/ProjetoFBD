@@ -365,7 +365,7 @@ public class LocacaoJF extends javax.swing.JFrame {
         // TODO add your handling code here:
         LocacaoService locaService = new LocacaoService();
         try {
-            if ((validarCampos() ) && (!locaService.isLocacaoDisponivel(dataRetiradaLocacao.getText(), dataDevoluLocacao.getText(), placaVeiculoLoc.getText().replace("-",""))){
+            if ((validarCampos() ) && (!locaService.isLocacaoDisponivel(dataRetiradaLocacao.getText(), dataDevoluLocacao.getText(), placaVeiculoLoc.getText().replace("-","")))){
                 boolean foiRemovido = locaService.removerLocacao(dataRetiradaLocacao.getText(), dataDevoluLocacao.getText(), placaVeiculoLoc.getText().replace("-", ""));
                 if (foiRemovido){
                     JOptionPane.showMessageDialog(null, "Remoção efetuada com sucesso");
