@@ -372,6 +372,22 @@ public class ClientePessoaDAO {
         }
         return false;
     }
+    public boolean deletarMotoristaCnh(int cnh){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("DELETE from motorista WHERE CNH = ?");
+            statement.setInt(1, cnh);
+            statement.executeUpdate();
+            return true;          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar Motorista: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }
     
     public boolean editarCliente(Cliente cliente){
         Connection connection = DataBaseConnection.getConexao();
@@ -460,65 +476,5 @@ public class ClientePessoaDAO {
         
         
     }
-    //incompl
-    public boolean isLocadoOuReservadoMesmoDia(String dataRetirada, String dataDev,String placaVeic){
-        return false;
-    }
-    //COLOQUEI ESSE METODO NO LOCACACAODAO TBM , escolher um p tirar
-     public void doLocacao(Locacao locacao) {
-        Connection connection = DataBaseConnection.getConexao();
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement("INSERT INTO locacao (data_retirada, data_devolucao, cnh_motorista, placa_veiculo, id_cliente)"
-                    + "VALUES(?,?,?,?,?)");
-            statement.setString(1, locacao.getDataRetirada());
-            statement.setString(2, locacao.getDataDevolucao());
-            statement.setInt(3, locacao.getCnhMotorista());
-            statement.setString(4, locacao.getPlacaVeiculo());
-            statement.setInt(5, locacao.getIdCliente());
-            statement.executeUpdate();
-            
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possível alocar o veículo " + ex);
-            
-        }
-        finally{
-            DataBaseConnection.fecharConexao(connection, statement);
-        }  
-    } 
-     //COLOQUEI ESSE METODO NO LOCACACAODAO TBM , escolher um p tirar
-     public void deleteLocacao(Locacao locacao) {
-        Connection connection = DataBaseConnection.getConexao();
-        PreparedStatement statement = null;
-        try {
-           // statement = connection.prepareStatement("INSERT INTO locacao (data_retirada, data_devolucao, cnh_motorista, placa_veiculo, id_cliente)"
-            //        + "VALUES(?,?,?,?,?)");
-            statement.executeUpdate();
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possível excluir locação do veículo " + ex);
-            
-        }
-        finally{
-            DataBaseConnection.fecharConexao(connection, statement);
-        }  
-     }
-     
-    public boolean deletarMotoristaCnh(int cnh){
-        Connection connection = DataBaseConnection.getConexao();
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement("Delete from motorista where CNH = ?");
-            statement.setInt(1, cnh);
-            statement.executeUpdate();
-            return true;          
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao deletar Motorista: " + ex);
-        }
-        finally{
-            DataBaseConnection.fecharConexao(connection, statement);
-        }
-        return false;
-    }
+    
 }

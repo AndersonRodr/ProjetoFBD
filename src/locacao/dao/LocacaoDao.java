@@ -6,9 +6,12 @@
 package locacao.dao;
 
 import cliente.dao.DataBaseConnection;
+import cliente.dominio.Motorista;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import locacao.dominio.Locacao;
 
@@ -19,9 +22,7 @@ import locacao.dominio.Locacao;
 public class LocacaoDAO {
     // N seria verificar se ja ta alocado/reservado?
     //isso aq de baixo é p ficar aq ou no veiculoDAO?
-    public boolean veiculoJaAlocadoMesmoDia(String dataRetirada, String dataDev,String placaVeiculo){
-        Connection connection = DataBaseConnection.getConexao();
-        PreparedStatement statement = null;
+    public boolean veiculoJaAlocadoMesmoDia(String dataRetirada, String dataDev,String placaVeiculo) throws SQLException{
         Locacao locacaoIgual = buscarLocacao(dataRetirada, dataDev, placaVeiculo);
         if (locacaoIgual==null){
             return false;
@@ -44,14 +45,30 @@ public class LocacaoDAO {
             
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possível alocar o veículo " + ex);
+            JOptionPane.showMessageDialog(null, "Não foi possível locar o veículo " + ex);
             
         }
         finally{
             DataBaseConnection.fecharConexao(connection, statement);
         }  
     }
-    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic){
+     public boolean removerLocacaoPeloId(int idLocacao){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("DELETE from locacao where Id_Locacao = ?");
+            statement.setInt(1, idLocacao);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar locação: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }
+    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
         Locacao buscaLocacaoDada= buscarLocacao(dataRetirada, dataDev, placaVeic);
@@ -60,7 +77,7 @@ public class LocacaoDAO {
         }
         int idLocacao = buscaLocacaoDada.getIdLocacao();
         try {
-            statement = connection.prepareStatement("Delete from locacao where id_Locacao = ?");
+            statement = connection.prepareStatement("DELETE from locacao where id_Locacao = ?");
             statement.setInt(1, idLocacao);
             statement.executeUpdate();
             return true;
@@ -72,11 +89,87 @@ public class LocacaoDAO {
         }
         return false;
         
-    //METODO ABAIXO INCOM
-    }public Locacao buscarLocacao(String dataRetirada, String dataDev, String placaVeic){
-        Locacao locacaoAchada = null;
-        //inc
+    //METODO ABAIXO INCOM   --------- ajeitar aq ainda
+    }
+    public boolean removerTodasLocacoes(){
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            //olhar aq embaixo
+            statement = connection.prepareStatement("DELETE FROM locacao ");
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar locações: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }
+    
+    
+    public Locacao buscarLocacao(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
+        Locacao locacaoAchada = new Locacao();
+        //locacaoAchada = null;
+        //Ajeitar essa linha de baixo para pesquisar do jeito q ta no banco (a data)
+        String dataRetPesqBanco = dataRetirada;
+        String dataDevPesqBanco = dataDev;
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM locacao WHERE placa_veiculo = '" + placaVeic + "'" +
+            "AND data_retirada='" + dataRetPesqBanco + "'" + "AND data_devolucao='" + dataDevPesqBanco + "'");
+            rs = statement.executeQuery(); 
+            if (rs.next()){
+                locacaoAchada.setIdLocacao(rs.getInt("id_Locacao"));
+                locacaoAchada.setPlacaVeiculo(rs.getString(placaVeic));
+                locacaoAchada.setCnhMotorista(rs.getInt("cnh_motorista"));
+                locacaoAchada.setIdCliente(rs.getInt("id_Cliente"));
+                locacaoAchada.setDataRetirada(rs.getString("data_retirada"));
+                locacaoAchada.setDataDevolucao(rs.getString("data_devolucao"));
+            }
+            else{
+                return null;
+            }
+
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar locação: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        
         return locacaoAchada;
+    }
+     public ArrayList<Locacao> getListaLocacoes(){
+        ArrayList<Locacao> listaLocacoes = new ArrayList<Locacao>();
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM locacao");
+            rs = statement.executeQuery(); 
+            while (rs.next()){
+                Locacao locacao = new Locacao();
+                locacao.setIdLocacao(rs.getInt("id_Locacao"));
+                locacao.setPlacaVeiculo(rs.getString("placa_veiculo"));
+                locacao.setCnhMotorista(rs.getInt("cnh_motorista"));
+                locacao.setDataRetirada(rs.getString("data_retirada"));
+                locacao.setDataDevolucao(rs.getString("data_devolucao"));
+                locacao.setIdCliente(rs.getInt("id_cliente"));
+                
+                listaLocacoes.add(locacao);
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar locações: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement, rs);
+        }
+        return listaLocacoes;
     }
     
 }

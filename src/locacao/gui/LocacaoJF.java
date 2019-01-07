@@ -8,7 +8,10 @@ package locacao.gui;
 
 import cliente.dominio.Cliente;
 import cliente.service.Servico;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import locacao.dominio.Locacao;
 import locacao.service.LocacaoService;
@@ -49,12 +52,12 @@ public class LocacaoJF extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buscarCPF = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         btnAlocarVeiculo = new javax.swing.JButton();
         tipoLocacao = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         tipoClienteBox = new javax.swing.JComboBox<>();
-        campoDado = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -63,12 +66,22 @@ public class LocacaoJF extends javax.swing.JFrame {
         dataDevoluLocacao = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        cnhMotorista = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        placaVeiculoLoc = new javax.swing.JTextPane();
         jLabel11 = new javax.swing.JLabel();
         btnRemoverLocacao = new javax.swing.JButton();
+        campoDado = new javax.swing.JFormattedTextField();
+        cnhMotorista = new javax.swing.JFormattedTextField();
+        placaVeiculoLoc = new javax.swing.JFormattedTextField();
+
+        try {
+            buscarCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        buscarCPF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarCPFActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +95,7 @@ public class LocacaoJF extends javax.swing.JFrame {
         });
 
         tipoLocacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2"}));
+        tipoLocacao.setActionCommand("comboBoxChangedTipoCliente");
         tipoLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tipoLocacaoActionPerformed(evt);
@@ -94,13 +108,6 @@ public class LocacaoJF extends javax.swing.JFrame {
         tipoClienteBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tipoClienteBoxActionPerformed(evt);
-            }
-        });
-
-        campoDado.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        campoDado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoDadoActionPerformed(evt);
             }
         });
 
@@ -150,16 +157,46 @@ public class LocacaoJF extends javax.swing.JFrame {
 
         jLabel4.setText("CNH do motorista:");
 
-        jScrollPane1.setViewportView(cnhMotorista);
-
-        jScrollPane2.setViewportView(placaVeiculoLoc);
-
         jLabel11.setText("Placa do veículo:");
 
         btnRemoverLocacao.setText("REMOVER LOCAÇÃO");
         btnRemoverLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoverLocacaoActionPerformed(evt);
+            }
+        });
+
+        try {
+            campoDado.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        campoDado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoDadoActionPerformed(evt);
+            }
+        });
+
+        try {
+            cnhMotorista.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        cnhMotorista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cnhMotoristaActionPerformed(evt);
+            }
+        });
+
+        try {
+            placaVeiculoLoc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        placaVeiculoLoc.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        placaVeiculoLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                placaVeiculoLocActionPerformed(evt);
             }
         });
 
@@ -172,44 +209,46 @@ public class LocacaoJF extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tipoClienteBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dataRetiradaLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(0, 114, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane1))
-                                .addGap(18, 18, 18)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel6)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                    .addGap(14, 14, 14)
+                                                    .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(tipoLocacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel7)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(11, 11, 11)
+                                                        .addComponent(btnRemoverLocacao)))
+                                                .addGap(0, 26, Short.MAX_VALUE)))))
+                                .addGap(29, 29, 29))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(dataRetiradaLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cnhMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(dataDevoluLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)))
-                            .addComponent(tipoClienteBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
-                                        .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tipoLocacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel7)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(11, 11, 11)
-                                                .addComponent(btnRemoverLocacao)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(29, 29, 29))
+                                    .addComponent(jLabel3)
+                                    .addComponent(placaVeiculoLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(26, 26, 26))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
@@ -232,27 +271,27 @@ public class LocacaoJF extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cnhMotorista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(placaVeiculoLoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tipoClienteBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tipoLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tipoLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAlocarVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemoverLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -260,13 +299,42 @@ public class LocacaoJF extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlocarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarVeiculoActionPerformed
-        if(validarCampos()){
-           //incompleto
-            JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
-            limparCampos();
-            
+        LocacaoService locaService = new LocacaoService();
+        try {
+            if((validarCampos() ) && (locaService.isLocacaoDisponivel(dataRetiradaLocacao.getText(), dataDevoluLocacao.getText(), placaVeiculoLoc.getText().replace("-", "")))){
+                //incompleto
+                Cliente pf = new Cliente();
+                Servico service = new Servico();
+                Locacao locacao = new Locacao();
+                
+                String cnhMotoristaEmString = (campoDado.getText());
+                int cnhMotorista = Integer.parseInt(cnhMotoristaEmString);
+                locacao.setCnhMotorista(cnhMotorista);
+                
+                String placaVeiculo = (placaVeiculoLoc.getText());
+                placaVeiculo = placaVeiculo.replace("-", "");
+                locacao.setPlacaVeiculo(placaVeiculo);
+                
+                String campoIdClienteCPFouCNPJ = (campoDado.getText());
+                campoIdClienteCPFouCNPJ = campoIdClienteCPFouCNPJ.replace(".", "");
+                campoIdClienteCPFouCNPJ = campoIdClienteCPFouCNPJ.replace("-", "");
+                pf = service.buscarPessoaFisica(campoIdClienteCPFouCNPJ);
+                if(pf != null){
+                  locacao.setIdCliente(pf.getPFisica().getId());   
+                } locacao.setIdCliente(pf.getPFisica().getId()); 
+                //locacao.setIdLocacao();
+                locacao.setDataRetirada(service.formatarDataEntrada(dataRetiradaLocacao.getText()));
+                locacao.setDataDevolucao(service.formatarDataEntrada(dataDevoluLocacao.getText()));
+                LocacaoService lService = new LocacaoService();
+                lService.doLocacao(locacao);
+                JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
+                limparCampos();
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LocacaoJF.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "ERRO");
         }
-        
         
     }//GEN-LAST:event_btnAlocarVeiculoActionPerformed
 
@@ -285,10 +353,6 @@ public class LocacaoJF extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tipoClienteBoxActionPerformed
 
-    private void campoDadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoDadoActionPerformed
-
     private void dataRetiradaLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataRetiradaLocacaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dataRetiradaLocacaoActionPerformed
@@ -299,29 +363,40 @@ public class LocacaoJF extends javax.swing.JFrame {
 
     private void btnRemoverLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverLocacaoActionPerformed
         // TODO add your handling code here:
-        if(validarCampos()){
-            Cliente pf = new Cliente();
-            Servico service = new Servico();
-            Locacao locacao = new Locacao();
-            
-            String cnhEmString = cnhMotorista.getText();
-            int cnhMotorista = Integer.parseInt(cnhEmString);
-            locacao.setCnhMotorista(cnhMotorista);
-            locacao.setPlacaVeiculo(placaVeiculoLoc.getText());
-            pf = service.buscarPessoaFisica(campoDado.getText());
-            if(pf != null){
-              locacao.setIdCliente(pf.getPFisica().getId());   
-            } locacao.setIdCliente(pf.getPFisica().getId()); 
-            //locacao.setIdLocacao();
-            locacao.setDataRetirada(service.formatarDataEntrada(dataRetiradaLocacao.getText()));
-            locacao.setDataDevolucao(service.formatarDataEntrada(dataDevoluLocacao.getText()));
-            LocacaoService lService = new LocacaoService();
-            lService.doLocacao(locacao);
-            JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
-            limparCampos();
+        LocacaoService locaService = new LocacaoService();
+        try {
+            if ((validarCampos() ) && (!locaService.isLocacaoDisponivel(dataRetiradaLocacao.getText(), dataDevoluLocacao.getText(), placaVeiculoLoc.getText().replace("-",""))){
+                boolean foiRemovido = locaService.removerLocacao(dataRetiradaLocacao.getText(), dataDevoluLocacao.getText(), placaVeiculoLoc.getText().replace("-", ""));
+                if (foiRemovido){
+                    JOptionPane.showMessageDialog(null, "Remoção efetuada com sucesso");
+                    limparCampos();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Não foi possível remover locação ou ela não existe");
+                }
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LocacaoJF.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "ERRO");
         }
             
     }//GEN-LAST:event_btnRemoverLocacaoActionPerformed
+
+    private void buscarCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarCPFActionPerformed
+
+    }//GEN-LAST:event_buscarCPFActionPerformed
+
+    private void campoDadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoDadoActionPerformed
+
+    private void cnhMotoristaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnhMotoristaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cnhMotoristaActionPerformed
+
+    private void placaVeiculoLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placaVeiculoLocActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_placaVeiculoLocActionPerformed
 
     /**
      * @param args the command line arguments
@@ -364,8 +439,9 @@ public class LocacaoJF extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlocarVeiculo;
     private javax.swing.JButton btnRemoverLocacao;
-    private javax.swing.JTextField campoDado;
-    private javax.swing.JTextPane cnhMotorista;
+    private javax.swing.JFormattedTextField buscarCPF;
+    private javax.swing.JFormattedTextField campoDado;
+    private javax.swing.JFormattedTextField cnhMotorista;
     private javax.swing.JFormattedTextField dataDevoluLocacao;
     private javax.swing.JFormattedTextField dataRetiradaLocacao;
     private javax.swing.JLabel jLabel1;
@@ -377,9 +453,7 @@ public class LocacaoJF extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane placaVeiculoLoc;
+    private javax.swing.JFormattedTextField placaVeiculoLoc;
     private javax.swing.JComboBox<String> tipoClienteBox;
     private javax.swing.JComboBox<String> tipoLocacao;
     // End of variables declaration//GEN-END:variables
@@ -387,9 +461,12 @@ public class LocacaoJF extends javax.swing.JFrame {
     private boolean validarCampos() {
         String dataRetirada = formatarData(dataRetiradaLocacao.getText());
         String dataDevolucao = formatarData(dataDevoluLocacao.getText());
-        String cnhMotoristaEmString = (cnhMotorista.getText());
+        String cnhMotoristaEmString = (campoDado.getText());
         String placaVeiculo = (placaVeiculoLoc.getText());
+        placaVeiculo = placaVeiculo.replace("-", "");
         String campoIdClienteCPFouCNPJ = (campoDado.getText());
+        campoIdClienteCPFouCNPJ = campoIdClienteCPFouCNPJ.replace(".", "");
+        campoIdClienteCPFouCNPJ = campoIdClienteCPFouCNPJ.replace("-", "");
         
         LocacaoService lService = new LocacaoService();
         Servico servico = new Servico();
@@ -414,7 +491,7 @@ public class LocacaoJF extends javax.swing.JFrame {
         dataDevoluLocacao.setText("");
         dataRetiradaLocacao.setText("");
         campoDado.setText("");
-        cnhMotorista.setText("");
+        campoDado.setText("");
         placaVeiculoLoc.setText("");
         
     }

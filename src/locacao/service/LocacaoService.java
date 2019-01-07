@@ -11,6 +11,9 @@ import cliente.dominio.Reserva;
 import cliente.service.Servico;
 import cliente.service.ServicoClienteCNPJ;
 import cliente.service.ServicoClienteCPF;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.InputMismatchException;
 import javax.swing.JOptionPane;
 import locacao.dao.LocacaoDAO;
@@ -26,13 +29,84 @@ import veiculo.dominio.Veiculo;
 public class LocacaoService {
     Servico service = new Servico();
     LocacaoDAO daoLocacao = new LocacaoDAO();
+    
+    public boolean isIntervaloDatasCerto(String dataRetirada, String dataDev) {
+        try{
+            String anoRetirada = dataRetirada.substring(0, 4);
+            int anoDigitadoRetirada = Integer.parseInt(anoRetirada);
+
+            String diaRetirada = dataRetirada.substring(8, 10);
+            int diaDigitadoRetirada = Integer.parseInt(diaRetirada);
+
+            String mesRetirada = dataRetirada.substring(5, 7);
+            int mesDigitadoRetirada = Integer.parseInt(mesRetirada);
+            System.out.println(mesRetirada);
+            Calendar cal = Calendar.getInstance();
+            int diaAtual = cal.get(Calendar.DATE);
+            int mesAtual = cal.get(Calendar.MONTH)+1;
+            int anoAtual = cal.get(Calendar.YEAR);
+
+            String anoDevolucao = dataDev.substring(0, 4);
+            int anoDigitadoDevolucao = Integer.parseInt(anoDevolucao);
+
+            String diaDevolucao = dataDev.substring(8, 10);
+            int diaDigitadoDev = Integer.parseInt(diaDevolucao);
+
+            String mesDevolucao = dataDev.substring(5, 7);
+            int mesDigitadoDevolucao = Integer.parseInt(mesDevolucao);
+
+            //Validacoes para ver se o data é valida
+            if(anoDigitadoDevolucao < anoDigitadoRetirada || mesDigitadoRetirada>12 || mesDigitadoDevolucao>12){
+               return false; 
+            }else{
+                if(mesDigitadoRetirada <mesAtual){
+                      return false;
+                }else{
+                    if(diaDigitadoRetirada < diaAtual){
+                        return false;
+                    }
+                }
+            }
+
+            //Validacao data devolucao menor que hoje
+            if(anoDigitadoDevolucao < anoAtual){
+                return false;
+            }else{
+                if(mesDigitadoDevolucao < mesAtual){
+                    return false;
+                }else{
+                    if(diaDigitadoDev < diaAtual){
+                        return false;
+                    }
+                }
+            }
+             //Validacoes de devolucao menor que retirada
+            if(anoDigitadoDevolucao < anoDigitadoRetirada){
+                return false;
+            }else{
+                if(mesDigitadoDevolucao < mesDigitadoRetirada){
+                    return false;
+                }else{
+                    if(diaDigitadoDev < diaDigitadoRetirada){
+                        return false;
+                    }
+                }
+            }
+            }
+           
+        catch(Exception ex){
+            return false;
+        }
+        return true;
+           
+    }
   
     public boolean isValidoDatas(String dataRetirada, String dataDevolucao){
-        ReservaService rService = new ReservaService(); //Para reaproveitar o codigo de validacao 
+        
         if((service.isEmpty(dataRetirada)||service.isEmpty(dataDevolucao))){
             return false;
        
-        }if(!rService.validarDatas(dataRetirada, dataDevolucao)){
+        }if(!isIntervaloDatasCerto(dataRetirada, dataDevolucao)){
            return false;
         }
         return true;
@@ -66,6 +140,7 @@ public class LocacaoService {
     }
     public boolean isValidoPlaca(String placa){
         //TEM OUTRAS VALIDAÇÕES AINDA
+        //Aq pode ta errado hm
         if((service.isEmpty(placa)||!(placa.trim().length()==7))){
             return false;
         }
@@ -84,7 +159,7 @@ public class LocacaoService {
     }
     public boolean isCPFvalidadorDigCerto(String cpf){
         ServicoClienteCPF serviceClienteCPF = new ServicoClienteCPF(cpf);
-        if(!serviceClienteCPF.isCPF()){
+        if(cpf.length()<11 || cpf.length()>11 || !serviceClienteCPF.isCPF()){
             return false;
         }
         
@@ -93,7 +168,7 @@ public class LocacaoService {
     public boolean isCNPJvalidadorDigCerto(String cnpj){
         ServicoClienteCNPJ serviceClienteCNPJ = new ServicoClienteCNPJ(cnpj,"nadaAqui");
         serviceClienteCNPJ.setCNPJ(cnpj);
-        if(!serviceClienteCNPJ.isCNPJ()){
+        if(cnpj.length()<14 || cnpj.length()>14 || !serviceClienteCNPJ.isCNPJ()){
             return false;
         }
         return true;
@@ -114,13 +189,13 @@ public class LocacaoService {
         }
         return true;
     }
-    public boolean isLocacaoDisponivel(String dataRetirada, String dataDev, String placaVeic){
+    public boolean isLocacaoDisponivel(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
         if(daoLocacao.veiculoJaAlocadoMesmoDia(dataRetirada, dataDev, placaVeic)){
             return false;
         }
         return true;
     }
-    public boolean validarTodosOsDados(String dataRetirada, String dataDev,String cnh, String placa){
+    public boolean validarTodosOsDados(String dataRetirada, String dataDev,String cnh, String placa) throws SQLException{
         if(!isValidoDatas(dataRetirada,dataDev) || !isValidoCNH(cnh) || !isValidoPlaca(placa) || !isValidoMotorista(cnh)){
             return false;
         }if (!isLocacaoDisponivel(dataRetirada, dataDev, placa)){
@@ -132,12 +207,33 @@ public class LocacaoService {
     public void doLocacao(Locacao locacao){
         daoLocacao.doLocacao(locacao);
     }
+    public ArrayList<Locacao> getListaLocacoes(){
+        ArrayList<Locacao> listaLocacoes = daoLocacao.getListaLocacoes();
+        return listaLocacoes;
+    }
+    //fazer dif buscas conforme os dados buscados
+    public Locacao buscarLocacao(){
+        Locacao locacaoBuscada = null;
+        return locacaoBuscada;
+    }
     
-    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic){
+    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
         if (!daoLocacao.removerLocacao(dataRetirada, dataDev, placaVeic)){
             return false;
         }
        return true; 
+    }
+    public boolean removerLocacaoPeloId(int idLocacao){
+         if (!daoLocacao.removerLocacaoPeloId(idLocacao)){
+            return false;
+        }
+        return true;
+    }
+    public boolean removerTodasLocacoes(){
+        if (!daoLocacao.removerTodasLocacoes()){
+            return false;
+        }
+        return true;
     }
     
 }
