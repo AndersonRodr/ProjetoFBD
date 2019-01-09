@@ -365,9 +365,8 @@ public class ReservaJF extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Datas inválidas");
             return false;
         }
-        if(tipocliente ==1){          
-           if(!servico.buscarCPF((campoDado.getText()))){
-               
+        if(tipocliente == 1){          
+           if(!servico.buscarCPF((campoDado.getText()))){               
                JOptionPane.showMessageDialog(null, "Cliente não encontrado");
                return false;
            }

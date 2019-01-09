@@ -263,13 +263,12 @@ public class ClientePessoaDAO {
         return false;
     }
     
-    public boolean verificarCnh(int cnh, int idCliente){
+    public boolean verificarCnh(int cnh){
         boolean result = false; 
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement("SELECT * FROM motorista WHERE cnh ='" + cnh + "'" + 
-                    "AND id_cliente='" + idCliente + "'");
+            statement = connection.prepareStatement("SELECT * FROM motorista WHERE cnh ='" + cnh + "'");
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
                 result = true;
@@ -305,7 +304,7 @@ public class ClientePessoaDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }
     }
-    public Motorista buscarMotoristaPelaCNH(int cnh){
+    public Motorista getMotorista(int cnh){
         Motorista motorista = new Motorista();
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;

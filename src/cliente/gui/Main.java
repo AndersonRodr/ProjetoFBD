@@ -3,6 +3,7 @@ package cliente.gui;
 import filial.gui.CadastrarFilial;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
+import locacao.gui.CadastrarLocacao;
 import locacao.gui.LocacaoJF;
 import reserva.gui.ReservaJF;
 import veiculo.gui.VeiculoJF;

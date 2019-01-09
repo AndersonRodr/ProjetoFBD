@@ -203,8 +203,9 @@ public class LocacaoService {
         return true;
         
     }
-    public void doLocacao(Locacao locacao){
-        daoLocacao.doLocacao(locacao);
+    public boolean doLocacao(Locacao locacao){
+        boolean locou = daoLocacao.doLocacao(locacao);
+        return locou;
     }
     public ArrayList<Locacao> getListaLocacoes(){
         ArrayList<Locacao> listaLocacoes = daoLocacao.getListaLocacoes();
@@ -228,8 +229,8 @@ public class LocacaoService {
         return listaLocacoesDaBusca;
     }
     
-    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
-        if (!daoLocacao.removerLocacao(dataRetirada, dataDev, placaVeic)){
+    public boolean removerLocacao(String dataRetirada, String dataDev, int cnh, String placaVeic) throws SQLException{
+        if (!daoLocacao.removerLocacao(dataRetirada, dataDev, cnh, placaVeic)){
             return false;
         }
        return true; 
@@ -245,6 +246,11 @@ public class LocacaoService {
             return false;
         }
         return true;
+    }
+    
+    public boolean buscarPlaca(String placa){
+        boolean achou = daoLocacao.buscarPlaca(placa);
+        return achou;
     }
     
 }

@@ -30,9 +30,10 @@ public class LocacaoDAO {
             return true;
         }
     }
-    public void doLocacao(Locacao locacao) {
+    public boolean doLocacao(Locacao locacao) {
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
+        boolean locou = false;
         try {
             statement = connection.prepareStatement("INSERT INTO locacao (data_retirada, data_devolucao, cnh_motorista, placa_veiculo, id_cliente)"
                     + "VALUES(?,?,?,?,?)");
@@ -42,15 +43,17 @@ public class LocacaoDAO {
             statement.setString(4, locacao.getPlacaVeiculo());
             statement.setInt(5, locacao.getIdCliente());
             statement.executeUpdate();
-            
+            locou = true;
             
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possível locar o veículo " + ex);
+            return locou;
             
         }
         finally{
             DataBaseConnection.fecharConexao(connection, statement);
-        }  
+        }
+        return locou;
     }
      public boolean removerLocacaoPeloId(int idLocacao){
         Connection connection = DataBaseConnection.getConexao();
@@ -68,17 +71,21 @@ public class LocacaoDAO {
         }
         return false;
     }
-    public boolean removerLocacao(String dataRetirada, String dataDev, String placaVeic) throws SQLException{
+    public boolean removerLocacao(String dataRetirada, String dataDev, int cnh, String placaVeic) throws SQLException{
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
-        Locacao buscaLocacaoDada= buscarLocacao(dataRetirada, dataDev, placaVeic);
-        if(buscaLocacaoDada ==null){
-            return false;
-        }
-        int idLocacao = buscaLocacaoDada.getIdLocacao();
+//        Locacao buscaLocacaoDada= buscarLocacao(dataRetirada, dataDev, placaVeic);
+//        if(buscaLocacaoDada ==null){
+//            return false;
+//        }
+//        int idLocacao = buscaLocacaoDada.getIdLocacao();
         try {
-            statement = connection.prepareStatement("DELETE from locacao where id_Locacao = ?");
-            statement.setInt(1, idLocacao);
+            statement = connection.prepareStatement("DELETE from locacao where data_retirada = ? and data_devolucao = ? and "
+                    + "cnh_motorista = ? and placa_veiculo = ?");
+            statement.setString(1, dataRetirada);
+            statement.setString(2, dataDev);
+            statement.setInt(3, cnh);
+            statement.setString(4, placaVeic);
             statement.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -252,6 +259,25 @@ public class LocacaoDAO {
             DataBaseConnection.fecharConexao(connection, statement, rs);
         }
         return listaLocacoes;
+    }
+     
+    public boolean buscarPlaca(String placa){
+        boolean result = false; 
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM veiculo WHERE placa ='" + placa + "'");
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                result = true;
+            }            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar placa: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return result;
     }
     
 }

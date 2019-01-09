@@ -221,7 +221,7 @@ public class Servico {
     }    
     
     public boolean inserirMotorista(Motorista motorista){
-        if (!verificarMotorista(motorista)){
+        if (!verificarMotorista(motorista.getCnh())){
             if (dao.inserirMotorista(motorista)){
                 return true;
             }
@@ -235,8 +235,8 @@ public class Servico {
         }
     }
     
-    public boolean verificarMotorista(Motorista motorista){
-        if(dao.verificarCnh(motorista.getCnh(), motorista.getIdCliente())){
+    public boolean verificarMotorista(int cnh){
+        if(dao.verificarCnh(cnh)){
             return true;
         }
         else{
@@ -244,7 +244,7 @@ public class Servico {
         }
     }
     public Motorista buscarMotoristaPelaCNH(int cnh){
-        Motorista motorista = dao.buscarMotoristaPelaCNH(cnh);
+        Motorista motorista = dao.getMotorista(cnh);
         if(motorista == null){
             JOptionPane.showMessageDialog(null, "Cliente/Motorista não encontrado");
             return null;
@@ -252,7 +252,7 @@ public class Servico {
             
         }
         else{
-            motorista = dao.buscarMotoristaPelaCNH(cnh);
+            motorista = dao.getMotorista(cnh);
         }
         return motorista;
     }
