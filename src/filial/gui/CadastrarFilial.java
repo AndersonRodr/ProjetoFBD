@@ -8,11 +8,16 @@ package filial.gui;
 import cliente.dominio.Motorista;
 import filial.service.ServicoFilial;
 import filial.dominio.Filial;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import reserva.dominio.Reserva;
+import reserva.gui.ListaReservaJF;
 
 /**
  *
@@ -49,6 +54,7 @@ public class CadastrarFilial extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaFiliais = new javax.swing.JTable();
+        remover = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +108,15 @@ public class CadastrarFilial extends javax.swing.JFrame {
         tabelaFiliais.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tabelaFiliais);
 
+        remover.setBackground(new java.awt.Color(255, 51, 51));
+        remover.setForeground(new java.awt.Color(255, 255, 255));
+        remover.setText("Remover Filial");
+        remover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -110,15 +125,21 @@ public class CadastrarFilial extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1)
-                            .addComponent(nomeCadFilial, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addComponent(jButton1)))
-                .addGap(0, 19, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1)
+                                    .addComponent(nomeCadFilial, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(106, 106, 106)
+                                .addComponent(jButton1)))
+                        .addGap(0, 19, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                        .addComponent(remover, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(93, 93, 93))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +153,9 @@ public class CadastrarFilial extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(remover)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -169,9 +192,25 @@ public class CadastrarFilial extends javax.swing.JFrame {
             else{
                 JOptionPane.showMessageDialog(null, "Erro: Filial já cadastrada");
             }
-
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void removerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerActionPerformed
+        if (tabelaFiliais.getSelectedRow() != -1){
+            DefaultTableModel tabelinha = (DefaultTableModel) tabelaFiliais.getModel();
+            Filial filial = new Filial();
+            int i = tabelaFiliais.getSelectedRow();
+            filial.setLocalizacao((String) tabelaFiliais.getValueAt(i, 0));
+            try {
+                if (service.removerFilial(filial.getLocalizacao())) {
+                    JOptionPane.showMessageDialog(null, "Filial Excluída");
+                    tabelinha.removeRow(tabelaFiliais.getSelectedRow());            
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CadastrarFilial.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_removerActionPerformed
 
     
     private void preencherTabela(){
@@ -231,6 +270,7 @@ public class CadastrarFilial extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nomeCadFilial;
+    private javax.swing.JButton remover;
     private javax.swing.JTable tabelaFiliais;
     // End of variables declaration//GEN-END:variables
 }

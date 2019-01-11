@@ -124,9 +124,7 @@ public class FilialDAO {
             }
             else{
                 return null;
-            }
-
-            
+            }            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao buscar filial: " + ex);
         }
@@ -134,6 +132,22 @@ public class FilialDAO {
             DataBaseConnection.fecharConexao(connection, statement, rs);
         }
         return filial;
-        
     }
+
+    public boolean removerFilial(String localizacao) throws SQLException{
+        Connection connection = DataBaseConnection.getConexao();
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("DELETE from filial where localizacao = ?");
+            statement.setString(1, localizacao);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao deletar Filial: " + ex);
+        }
+        finally{
+            DataBaseConnection.fecharConexao(connection, statement);
+        }
+        return false;
+    }    
 }

@@ -71,21 +71,12 @@ public class LocacaoDAO {
         }
         return false;
     }
-    public boolean removerLocacao(String dataRetirada, String dataDev, int cnh, String placaVeic) throws SQLException{
+    public boolean removerLocacao(int idLocacao) throws SQLException{
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;
-//        Locacao buscaLocacaoDada= buscarLocacao(dataRetirada, dataDev, placaVeic);
-//        if(buscaLocacaoDada ==null){
-//            return false;
-//        }
-//        int idLocacao = buscaLocacaoDada.getIdLocacao();
         try {
-            statement = connection.prepareStatement("DELETE from locacao where data_retirada = ? and data_devolucao = ? and "
-                    + "cnh_motorista = ? and placa_veiculo = ?");
-            statement.setString(1, dataRetirada);
-            statement.setString(2, dataDev);
-            statement.setInt(3, cnh);
-            statement.setString(4, placaVeic);
+            statement = connection.prepareStatement("DELETE from locacao where locacao.id_Locacao = ?");
+            statement.setInt(1, idLocacao);
             statement.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -95,9 +86,8 @@ public class LocacaoDAO {
             DataBaseConnection.fecharConexao(connection, statement);
         }
         return false;
-        
-    //METODO ABAIXO INCOM   --------- ajeitar aq ainda
     }
+    
     public boolean removerTodasLocacoes(){
         Connection connection = DataBaseConnection.getConexao();
         PreparedStatement statement = null;

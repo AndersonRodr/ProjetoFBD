@@ -7,6 +7,7 @@ package filial.service;
 
 import filial.dao.FilialDAO;
 import filial.dominio.Filial;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -63,5 +64,12 @@ public class ServicoFilial {
 
     public void buscarFilial() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public boolean removerFilial(String localizacao) throws SQLException{
+        if (!dao.removerFilial(localizacao)){
+            return false;
+        }
+        return true;
     }
 }

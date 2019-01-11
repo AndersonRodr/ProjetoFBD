@@ -17,10 +17,10 @@ import javax.swing.table.TableRowSorter;
 import locacao.dominio.Locacao;
 import locacao.gui.CadastrarLocacao;
 import locacao.service.LocacaoService;
-import reserva.gui.ReservaJF;
+import reserva.gui.CadastrarReservaJF;
 import veiculo.gui.VeiculoJF;
 
-public class ListaDeLocacoesJF extends javax.swing.JFrame {
+public class ListaLocacaoJF extends javax.swing.JFrame {
 //    private boolean frameLoginOpen = false;
 //    private boolean frameReservaOpen = false;
 //    private boolean frameVeiculoOpen = false;
@@ -32,11 +32,13 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
     private ArrayList<Locacao> listaLocacoes = new ArrayList<Locacao>();
     
     
-    public ListaDeLocacoesJF() {
+    public ListaLocacaoJF() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         DefaultTableModel tabelinha = (DefaultTableModel) tabelaLocacoes.getModel();
         tabelaLocacoes.setRowSorter(new TableRowSorter(tabelinha));
+        tabelaLocacoes.getColumnModel().getColumn(4).setMinWidth(0);
+        tabelaLocacoes.getColumnModel().getColumn(4).setMaxWidth(0);
         preencherTabela();
     }
     private void preencherTabela(){ 
@@ -49,7 +51,8 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
                         l.getPlacaVeiculo(),
                         formatarDataSaida(l.getDataRetirada()),
                         formatarDataSaida(l.getDataDevolucao()),
-                        l.getCnhMotorista()
+                        l.getCnhMotorista(),
+                        l.getIdLocacao()
                 });
                  
                 }
@@ -76,7 +79,6 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaLocacoes = new javax.swing.JTable();
         btnExcluirLocacao = new javax.swing.JButton();
@@ -90,16 +92,16 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tunga", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Locadora de Veículos");
+        jLabel1.setText("Locações");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(158, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(158, 158, 158))
+                .addGap(196, 196, 196))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,20 +111,16 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 51, 204));
-        jLabel2.setText("Lista de locações:");
-
         tabelaLocacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Placa do veículo", "Data de retirada", "Data de Devolução", "CNH do Motorista"
+                "Placa do veículo", "Data de retirada", "Data de Devolução", "CNH do Motorista", "idLocacao"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -147,28 +145,22 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnExcluirLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(252, 252, 252))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(244, 244, 244))
+                .addComponent(btnExcluirLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(204, 204, 204))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(47, 47, 47)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(btnExcluirLocacao)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,20 +182,14 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
             DefaultTableModel tabelinha = (DefaultTableModel) tabelaLocacoes.getModel();
             Locacao locacao = new Locacao();
             int i = tabelaLocacoes.getSelectedRow();
-            locacao.setDataRetirada((String) tabelaLocacoes.getValueAt(i, 1));
-            locacao.setDataDevolucao((String) tabelaLocacoes.getValueAt(i, 2));
-            locacao.setCnhMotorista((Integer) tabelaLocacoes.getValueAt(i, 3));
-            locacao.setPlacaVeiculo((String) tabelaLocacoes.getValueAt(i, 0));
-            
-            locacao.setDataRetirada(formatarDataEntrada(locacao.getDataRetirada()));
-            locacao.setDataDevolucao(formatarDataEntrada(locacao.getDataDevolucao()));
+            locacao.setIdLocacao((Integer) tabelaLocacoes.getValueAt(i, 4));
             try {
-                if (locService.removerLocacao(locacao.getDataRetirada(), locacao.getDataDevolucao(), locacao.getCnhMotorista(), locacao.getPlacaVeiculo())){
+                if (locService.removerLocacao(locacao.getIdLocacao())){
                     JOptionPane.showMessageDialog(null, "Locacao Excluída");
                     tabelinha.removeRow(tabelaLocacoes.getSelectedRow()); 
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ListaDeLocacoesJF.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ListaLocacaoJF.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
@@ -224,14 +210,18 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListaDeLocacoesJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaLocacaoJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListaDeLocacoesJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaLocacaoJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListaDeLocacoesJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaLocacaoJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListaDeLocacoesJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaLocacaoJF.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -240,7 +230,7 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListaDeLocacoesJF().setVisible(true);
+                new ListaLocacaoJF().setVisible(true);
             }
         });
     }
@@ -248,7 +238,6 @@ public class ListaDeLocacoesJF extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluirLocacao;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

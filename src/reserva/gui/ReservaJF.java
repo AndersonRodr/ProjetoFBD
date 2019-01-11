@@ -5,39 +5,16 @@
  */
 package reserva.gui;
 
-import cliente.dominio.Cliente;
-import cliente.dominio.PessoaFisica;
-import cliente.service.Servico;
-import filial.service.ServicoFilial;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import reserva.dominio.Reserva;
-import reserva.service.ReservaService;
 
-/**
- *
- * @author Anderson
- */
 public class ReservaJF extends javax.swing.JFrame {
-    ServicoFilial filialService = new ServicoFilial();
-    private int tipocliente = 1;//1-PESSOA FISICA 2-PESSOA JURIDICA
 
-    /**
-     * Creates new form ReservaJF
-     */
     public ReservaJF() {
         initComponents();
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
-    }
-    
-    private String formatarData(String nasc){
-        String ano = nasc.substring(6, 10);
-
-        String dia = nasc.substring(0, 2);
-
-        String mes = nasc.substring(3, 5);
-
-        return ano+"-"+mes+"-"+dia;
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -52,21 +29,8 @@ public class ReservaJF extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        dataRetiradaReserva = new javax.swing.JFormattedTextField();
-        dataDevolReserva = new javax.swing.JFormattedTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        btnReserva = new javax.swing.JButton();
-        tipoReserva = new javax.swing.JComboBox<>();
-        filialRetirada = new javax.swing.JComboBox<>();
-        filialDevolucao = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        tipoClienteBox = new javax.swing.JComboBox<>();
-        campoDado = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,166 +38,62 @@ public class ReservaJF extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Reserva de Veículos");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 119, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(110, 110, 110))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel1)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
-        jLabel1.setText("RESERVA DE VEÍCULOS");
-
-        jLabel2.setText("Data de retirada:");
-
-        try {
-            dataRetiradaReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        dataRetiradaReserva.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Lista de Reservas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dataRetiradaReservaActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        try {
-            dataDevolReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jLabel3.setText("Data de devolução:");
-
-        jLabel4.setText("Filial de retirada:");
-
-        jLabel5.setText("Filial de devolução:");
-
-        jLabel7.setText("Tipo:");
-
-        btnReserva.setText("RESERVAR VEÍCULO");
-        btnReserva.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Adicionar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReservaActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
-
-        tipoReserva.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2"}));
-        tipoReserva.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tipoReservaActionPerformed(evt);
-            }
-        });
-
-        filialRetirada.setModel(new javax.swing.DefaultComboBoxModel<>(filialService.getNomesFiliais()));
-
-        filialDevolucao.setModel(new javax.swing.DefaultComboBoxModel<>(filialService.getNomesFiliais()));
-
-        jLabel10.setText("Tipo Cliente:");
-
-        tipoClienteBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Pessoa Física","Pessoa Juridica"}));
-        tipoClienteBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tipoClienteBoxActionPerformed(evt);
-            }
-        });
-
-        campoDado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoDadoActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("CPF ou CNPJ:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tipoClienteBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(filialRetirada, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(filialDevolucao, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dataRetiradaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel2))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dataDevolReserva, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addGap(6, 6, 6))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                .addGap(37, 37, 37)
-                                                .addComponent(jLabel1)))
-                                        .addGap(0, 40, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(tipoReserva, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGap(29, 29, 29))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReserva)
-                        .addGap(105, 105, 105))))
+                .addGap(98, 98, 98)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(95, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dataRetiradaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dataDevolReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filialRetirada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filialDevolucao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tipoClienteBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoDado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(tipoReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 109, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -250,55 +110,20 @@ public class ReservaJF extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tipoReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoReservaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tipoReservaActionPerformed
-
-    private void btnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaActionPerformed
-        if(validarCampos()){
-            Cliente pf = new Cliente();
-            Servico service = new Servico();
-            Reserva reserva = new Reserva();
-            if(tipocliente==1){               
-                pf = service.buscarPessoaFisica(campoDado.getText());
-                reserva.setIdCliente(pf.getPFisica().getId());
-                
-            }else{
-                pf = service.buscarPessoaJuridica(campoDado.getText());
-                reserva.setIdCliente(pf.getpJuridica().getIdCliente());
-            }
-            
-            reserva.setDataDevolucao(service.formatarDataEntrada(dataDevolReserva.getText()));
-            reserva.setDataRetirada(service.formatarDataEntrada(dataRetiradaReserva.getText()));
-            reserva.setIdFilialOrigem(filialService.buscarFilial((String) filialRetirada.getSelectedItem()).getId());
-            reserva.setIdFilialDevolucao(filialService.buscarFilial((String) filialDevolucao.getSelectedItem()).getId());
-            reserva.setIdTipoVeiculo(Integer.parseInt((String)tipoReserva.getSelectedItem()));
-            ReservaService rService = new ReservaService();
-            rService.doReserva(reserva);
-            JOptionPane.showMessageDialog(null, "Operação efetuada com sucesso");
-            limparCampos();
-            
-            
-            
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ListaReservaJF telaReserva = null;
+        try {
+            telaReserva = new ListaReservaJF();
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservaJF.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnReservaActionPerformed
+        telaReserva.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void campoDadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoDadoActionPerformed
-
-    private void tipoClienteBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoClienteBoxActionPerformed
-        if(tipoClienteBox.getSelectedIndex()==1){
-            tipocliente = 2;
-        }else{ 
-            tipocliente = 1;
-            
-        }
-    }//GEN-LAST:event_tipoClienteBoxActionPerformed
-
-    private void dataRetiradaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataRetiradaReservaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dataRetiradaReservaActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CadastrarReservaJF telaReserva = new CadastrarReservaJF();
+        telaReserva.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -336,53 +161,10 @@ public class ReservaJF extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnReserva;
-    private javax.swing.JTextField campoDado;
-    private javax.swing.JFormattedTextField dataDevolReserva;
-    private javax.swing.JFormattedTextField dataRetiradaReserva;
-    private javax.swing.JComboBox<String> filialDevolucao;
-    private javax.swing.JComboBox<String> filialRetirada;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JComboBox<String> tipoClienteBox;
-    private javax.swing.JComboBox<String> tipoReserva;
     // End of variables declaration//GEN-END:variables
-
-    private boolean validarCampos() {
-        String dataRetirada = formatarData(dataRetiradaReserva.getText());
-        String dataDevolucao = formatarData(dataDevolReserva.getText());
-        ReservaService rService = new ReservaService();
-        Servico servico = new Servico();
-        if(!rService.validarDatas(dataRetirada, dataDevolucao)){
-            JOptionPane.showMessageDialog(null, "Datas inválidas");
-            return false;
-        }
-        if(tipocliente == 1){          
-           if(!servico.buscarCPF((campoDado.getText()))){               
-               JOptionPane.showMessageDialog(null, "Cliente não encontrado");
-               return false;
-           }
-        }else{
-           if(!servico.buscarCNPJ((campoDado.getText()))){
-              JOptionPane.showMessageDialog(null, "Cliente não encontrado");
-              return false; 
-           } 
-        }
-        return true;
-    }
-
-    private void limparCampos() {
-        dataDevolReserva.setText("");
-        dataRetiradaReserva.setText("");
-        campoDado.setText("");
-    }
-        
 }

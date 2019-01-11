@@ -5,14 +5,11 @@ import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import locacao.gui.CadastrarLocacao;
 import locacao.gui.LocacaoJF;
+import reserva.gui.CadastrarReservaJF;
 import reserva.gui.ReservaJF;
 import veiculo.gui.VeiculoJF;
 
 public class Main extends javax.swing.JFrame {
-//    private boolean frameLoginOpen = false;
-//    private boolean frameReservaOpen = false;
-//    private boolean frameVeiculoOpen = false;
-//    private boolean frameFilialOpen = false;
     public Main() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

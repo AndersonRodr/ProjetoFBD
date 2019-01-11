@@ -16,6 +16,15 @@ public class Reserva {
     private int idFilialDevolucao;
     private int idTipoVeiculo;
     private int idCliente;
+    private int idReserva;
+    private String CpfCnpj;
+    
+    public int getIdReserva() {
+        return this.idReserva;
+    }
+    public void setIdReserva(int idReserva) {
+        this.idReserva = idReserva;
+    }
 
     public String getDataRetirada() {
         return dataRetirada;
@@ -65,6 +74,12 @@ public class Reserva {
         this.idCliente = idCliente;
     }
     
-    
+     public String getCpfCnpj() {
+        return this.CpfCnpj;
+    }
+
+    public void setCpfCnpj(String CpfCnpj) {
+        this.CpfCnpj = CpfCnpj;
+    }   
     
 }

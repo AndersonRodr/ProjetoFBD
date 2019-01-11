@@ -10,6 +10,7 @@ import cliente.dominio.Cliente;
 import cliente.service.Servico;
 import static java.lang.Integer.parseInt;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -253,24 +254,28 @@ public class CadastrarLocacao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlocarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarVeiculoActionPerformed
-        if (validarCampos()){
-            Locacao locacao = new Locacao();
-            locacao.setDataRetirada(formatarData(dataRetiradaLocacao.getText()));
-            locacao.setDataDevolucao(formatarData(dataDevoluLocacao.getText()));
-            locacao.setCnhMotorista(parseInt(cnhMotorista.getText()));
-            locacao.setPlacaVeiculo(placaVeiculoLoc.getText());
-            Cliente cliente = new Cliente();
-            if (tipoCliente == 0){
-                cliente=service.buscarPessoaFisica(campoDado.getText());
+        try {
+            if (validarCampos()){
+                Locacao locacao = new Locacao();
+                locacao.setDataRetirada(formatarData(dataRetiradaLocacao.getText()));
+                locacao.setDataDevolucao(formatarData(dataDevoluLocacao.getText()));
+                locacao.setCnhMotorista(parseInt(cnhMotorista.getText()));
+                locacao.setPlacaVeiculo(placaVeiculoLoc.getText());
+                Cliente cliente = new Cliente();
+                if (tipoCliente == 0){
+                    cliente=service.buscarPessoaFisica(campoDado.getText());
+                }
+                else{
+                    cliente=service.buscarPessoaJuridica(campoDado.getText());
+                }
+                
+                locacao.setIdCliente(cliente.getId());
+                if (locaService.doLocacao(locacao)){
+                    JOptionPane.showMessageDialog(null, "Locacao realizada com sucesso");
+                }
             }
-            else{
-                cliente=service.buscarPessoaJuridica(campoDado.getText());
-            }
-            
-            locacao.setIdCliente(cliente.getId());
-            if (locaService.doLocacao(locacao)){
-                JOptionPane.showMessageDialog(null, "Locacao realizada com sucesso");
-            }
+        } catch (ParseException ex) {
+            Logger.getLogger(CadastrarLocacao.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }//GEN-LAST:event_btnAlocarVeiculoActionPerformed
 
@@ -371,20 +376,31 @@ public class CadastrarLocacao extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> tipoLocacao;
     // End of variables declaration//GEN-END:variables
 
-    private boolean validarCampos() {
-        String dataRetirada = formatarData(dataRetiradaLocacao.getText());
-        String dataDevolucao = formatarData(dataDevoluLocacao.getText());
-        
+    private boolean validarCampos() throws ParseException {
+        String dataRetirada = dataRetiradaLocacao.getText();
+        String dataDevolucao = dataDevoluLocacao.getText();
+  
         LocacaoService lService = new LocacaoService();
-        Servico servico = new Servico();        
-        if(!lService.isIntervaloDatasCerto(dataRetirada, dataDevolucao)){
+
+        if (!lService.verificarDatas(dataRetirada, dataDevolucao)){
             JOptionPane.showMessageDialog(null, "Datas inválidas");
             return false;
-        }        
+        }
+        else if (service.isEmpty(cnhMotorista.getText())){
+            JOptionPane.showMessageDialog(null, "CNH inválida");
+            return false;
+        }  
+        else if (!cnhInteiro()){
+            return false;
+        }
         else if (!service.verificarMotorista(parseInt(cnhMotorista.getText()))){
             JOptionPane.showMessageDialog(null, "Motorista não cadastrado");
             return false;
         }
+        else if (service.isEmpty(placaVeiculoLoc.getText())){
+            JOptionPane.showMessageDialog(null, "Placa inválida");
+            return false;
+        }        
         else if (!locaService.buscarPlaca(placaVeiculoLoc.getText())){
             JOptionPane.showMessageDialog(null, "Placa não encontrada");
             return false;
@@ -399,9 +415,20 @@ public class CadastrarLocacao extends javax.swing.JFrame {
                 return false;
             }
         }
-
         return true;
     }
+    
+    public boolean cnhInteiro(){
+        try {
+            int cnh = parseInt(cnhMotorista.getText());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+           JOptionPane.showMessageDialog(null, "Digite apenas números");
+            return false;
+        }
+    }
+    
     private void limparCampos() {
         dataDevoluLocacao.setText("");
         dataRetiradaLocacao.setText("");
